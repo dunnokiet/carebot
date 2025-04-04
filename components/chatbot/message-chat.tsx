@@ -86,18 +86,21 @@ export function ChatMessage({
     <View className={cn(isUser ? "items-end" : "items-start")}>
       <View
         className={cn(
-          "max-w-xs rounded-2xl p-3",
+          "min-w-16 max-w-xs items-center rounded-3xl p-4",
           isUser ? "rounded-br-none bg-primary" : "rounded-bl-none bg-muted",
         )}
       >
         <MarkdownRenderer
-          className={cn(isUser ? "text-primary-foreground" : "text-foreground")}
+          textClassName={cn(
+            "native:text-lg",
+            isUser ? "text-primary-foreground" : "text-foreground",
+          )}
         >
           {content}
         </MarkdownRenderer>
       </View>
       {showTimeStamp && createdAt ? (
-        <Text className={cn("mt-1 block px-1 text-xs opacity-50")}>
+        <Text className="native:text-base mt-1 px-1 text-sm opacity-50">
           {formattedTime}
         </Text>
       ) : null}

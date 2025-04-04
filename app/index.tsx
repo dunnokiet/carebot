@@ -15,6 +15,7 @@ export default function App() {
     handleSubmit,
     status,
     stop,
+    reload,
   } = useChat({
     fetch: expoFetch as unknown as typeof globalThis.fetch,
     api: generateAPIUrl("/api/chat"),
@@ -25,12 +26,8 @@ export default function App() {
 
   return (
     <SafeAreaView className="h-full">
-      <View className="h-[95%] bg-background p-3">
-        <MessageList
-          className="flex-1"
-          messages={messages}
-          isStreaming={status === "submitted"}
-        />
+      <View className="h-full flex-col bg-background px-3 py-4">
+        <MessageList className="flex-1" messages={messages} status={status} />
         <MessageInput
           className="mt-4"
           value={input}

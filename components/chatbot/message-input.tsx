@@ -4,12 +4,13 @@ import { Button } from "~/components/ui/button";
 import { Send } from "~/lib/icons/Send";
 import { Mic } from "~/lib/icons/Mic";
 import { Square } from "~/lib/icons/Square";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { Textarea } from "../ui/textarea";
 
 export interface MessageInputProps extends TextInputProps {
   className?: string;
+  textAreaClassName?: string;
   status: "error" | "submitted" | "streaming" | "ready";
-  enableInterrupt?: boolean;
   stop?: () => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event?: { preventDefault?: () => void }) => void;
@@ -18,29 +19,31 @@ export interface MessageInputProps extends TextInputProps {
 export function MessageInput({
   placeholder = "Input here...",
   className,
+  textAreaClassName,
   status,
-  enableInterrupt,
   stop,
   handleInputChange,
   handleSubmit,
   ...props
 }: MessageInputProps) {
-  const textInputRef = useRef<TextInput | null>(null);
+  const textAreaRef = useRef<TextInput | null>(null);
 
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <View className={cn("relative", className)}>
-      <TextInput
-        ref={textInputRef}
+      <View
         className={cn(
-          "z-10 min-h-[72px] rounded-xl border border-input bg-background p-3 pr-24 text-base text-foreground placeholder:text-muted-foreground",
-          isFocused && "border-primary",
+          "absolute inset-[-4px] rounded-[26px] border-2 border-primary",
+          isFocused ? "native:flex" : "hidden",
         )}
+      />
+      <Textarea
+        ref={textAreaRef}
         placeholder={placeholder}
-        multiline
-        numberOfLines={4}
-        textAlignVertical="top"
+        className="z-10 min-h-[90px] rounded-3xl p-4 pr-28"
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         onChange={(e) => {
           handleInputChange({
             ...e,
@@ -50,33 +53,33 @@ export function MessageInput({
             },
           } as unknown as React.ChangeEvent<HTMLInputElement>);
         }}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
         {...props}
       />
-      <View className="absolute right-3 top-2 z-20 flex-row gap-2">
-        <Button size="icon" className="h-9 w-9 rounded-xl" variant="outline">
-          <Mic className="text-muted-foreground" size={14} />
+      <View className="absolute right-4 top-4 z-20 flex-row gap-3">
+        <Button size="icon" className="rounded-2xl" variant="outline">
+          <Mic className="text-muted-foreground" size={16} />
         </Button>
 
-        {status === "submitted" && stop ? (
-          <Button size="icon" className="h-9 w-9 rounded-xl" onPress={stop}>
-            <Square
-              className="fill-primary-foreground text-primary-foreground"
-              size={14}
-            />
+        {(status === "submitted" || status === "streaming") && stop ? (
+          <Button size="icon" className="rounded-2xl" onPress={stop}>
+            <View className="animate-pulse">
+              <Square
+                className="fill-primary-foreground text-primary-foreground"
+                size={14}
+              />
+            </View>
           </Button>
         ) : (
           <Button
             size="icon"
-            className="h-9 w-9 rounded-xl"
+            className="rounded-2xl"
             onPress={(e) => {
               e.preventDefault();
               handleSubmit();
             }}
             disabled={props.value === "" || status !== "ready"}
           >
-            <Send className="text-primary-foreground" size={14} />
+            <Send className="text-primary-foreground" size={16} />
           </Button>
         )}
       </View>

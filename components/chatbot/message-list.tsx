@@ -1,45 +1,31 @@
 import { ScrollView } from "react-native";
-import { ChatMessage, ChatMessageProps, Message } from "./message-chat";
+import { ChatMessage } from "./message-chat";
 import { cn } from "~/lib/utils";
-import { Text } from "../ui/text";
-
-type AdditionalMessageOptions = Omit<ChatMessageProps, keyof Message>;
+import { Loader } from "./loader";
 
 interface MessageListProps {
   className?: string;
   messages: any;
+  status: "error" | "submitted" | "streaming" | "ready";
   showTimeStamps?: boolean;
-  isStreaming?: boolean;
-  messageOptions?:
-    | AdditionalMessageOptions
-    | ((message: Message) => AdditionalMessageOptions);
 }
 
 export function MessageList({
   className,
   messages,
+  status,
   showTimeStamps = true,
-  isStreaming = false,
-  messageOptions,
 }: MessageListProps) {
   return (
-    <ScrollView className={cn("gap-y-4", className)}>
-      {messages.map((message: any, index: any) => {
-        const additionalOptions =
-          typeof messageOptions === "function"
-            ? messageOptions(message)
-            : messageOptions;
-
-        return (
-          <ChatMessage
-            key={index}
-            showTimeStamp={showTimeStamps}
-            {...message}
-            {...additionalOptions}
-          />
-        );
-      })}
-      {isStreaming && <Text>Loading...</Text>}
+    <ScrollView
+      className={className}
+      contentContainerClassName={"gap-y-4"}
+      showsVerticalScrollIndicator={false}
+    >
+      {messages.map((message: any, index: any) => (
+        <ChatMessage key={index} showTimeStamp={showTimeStamps} {...message} />
+      ))}
+      {status === "submitted" && <Loader />}
     </ScrollView>
   );
 }
