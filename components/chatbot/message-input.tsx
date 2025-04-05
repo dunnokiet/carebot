@@ -34,7 +34,7 @@ export function MessageInput({
     <View className={cn("relative", className)}>
       <View
         className={cn(
-          "absolute inset-[-4] hidden rounded-[25px] border-2 border-primary",
+          "absolute inset-[-4px] hidden rounded-[25px] border-2 border-primary",
           isFocused && "native:flex",
         )}
       />
