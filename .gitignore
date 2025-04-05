@@ -38,6 +38,5 @@ yarn-error.*
 app-example
 
 # python
-venv/
-.env
+.venv/
 __pycache__
