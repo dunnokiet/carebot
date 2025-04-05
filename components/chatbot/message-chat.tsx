@@ -86,7 +86,7 @@ export function ChatMessage({
     <View className={cn(isUser ? "items-end" : "items-start")}>
       <View
         className={cn(
-          "min-w-16 max-w-xs items-center rounded-3xl p-4",
+          "min-w-16 max-w-xs items-center rounded-3xl p-3",
           isUser ? "rounded-br-none bg-primary" : "rounded-bl-none bg-muted",
         )}
       >

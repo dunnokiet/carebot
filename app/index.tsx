@@ -26,8 +26,8 @@ export default function App() {
 
   return (
     <SafeAreaView className="h-full">
-      <View className="h-full flex-col bg-background px-3 py-4">
-        <MessageList className="flex-1" messages={messages} status={status} />
+      <View className="flex-1 bg-background px-3 py-4">
+        <MessageList messages={messages} status={status} />
         <MessageInput
           className="mt-4"
           value={input}

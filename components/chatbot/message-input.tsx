@@ -34,14 +34,14 @@ export function MessageInput({
     <View className={cn("relative", className)}>
       <View
         className={cn(
-          "absolute inset-[-4px] rounded-[26px] border-2 border-primary",
-          isFocused ? "native:flex" : "hidden",
+          "absolute inset-[-4] hidden rounded-[25px] border-2 border-primary",
+          isFocused && "native:flex",
         )}
       />
       <Textarea
         ref={textAreaRef}
         placeholder={placeholder}
-        className="z-10 min-h-[90px] rounded-3xl p-4 pr-28"
+        className="native:text-lg/6 z-10 min-h-[90px] rounded-3xl py-4 pr-28"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onChange={(e) => {
@@ -55,7 +55,7 @@ export function MessageInput({
         }}
         {...props}
       />
-      <View className="absolute right-4 top-4 z-20 flex-row gap-3">
+      <View className="absolute right-4 top-4 z-20 flex-row gap-2">
         <Button size="icon" className="rounded-2xl" variant="outline">
           <Mic className="text-muted-foreground" size={16} />
         </Button>
