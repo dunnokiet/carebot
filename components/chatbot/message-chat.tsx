@@ -100,9 +100,7 @@ export function ChatMessage({
         </MarkdownRenderer>
       </View>
       {showTimeStamp && createdAt ? (
-        <Text className="native:text-base mt-1 px-1 text-sm opacity-50">
-          {formattedTime}
-        </Text>
+        <Text className="mt-1 px-1 text-sm opacity-50">{formattedTime}</Text>
       ) : null}
     </View>
   );
