@@ -17,7 +17,7 @@ export function MarkdownRenderer({ textClassName, children }: MarkdownRendererPr
 }
 
 const renders = {
-  // unknown: () => null,
+  unknown: () => null,
   body: (node: any, children: any) => (
     <View className="gap-y-4" key={node.key}>
       {children}
