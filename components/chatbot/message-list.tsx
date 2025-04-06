@@ -1,12 +1,11 @@
 import { ScrollView, View } from "react-native";
 import { ChatMessage } from "./message-chat";
-import { ArrowDown } from "~/lib/icons/ArrowDown";
 import { Loader } from "./loader";
 import { useAutoScroll } from "~/hooks/useAutoScroll";
 import { Button } from "../ui/button";
-import { Text } from "../ui/text";
 import { cn } from "~/lib/utils";
-
+import { ArrowDown } from "lucide-react-native";
+import { Icon } from "../icon";
 
 interface MessageListProps {
   className?: string;
@@ -24,14 +23,18 @@ export function MessageList({
   const { scrollViewRef, handleScroll, shouldAutoScroll, scrollToBottom } =
     useAutoScroll([messages]);
 
+  // TODO Kiểm tra lại shouldAutoScroll
+
   return (
-    <View className="relative flex-1">
+    <View className={cn("relative flex-1", className)}>
       <ScrollView
         ref={scrollViewRef}
         onScroll={handleScroll}
         contentContainerClassName={"gap-y-4"}
         showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
+        // TODO Xem có children không
+        // keyboardShouldPersistTaps="handled"
+        overScrollMode="never"
       >
         {messages.map((message: any, index: any) => (
           <ChatMessage
@@ -49,7 +52,7 @@ export function MessageList({
           size="icon"
           className="absolute bottom-0 right-4 z-10 rounded-2xl"
         >
-          <ArrowDown className="text-primary" size={20} />
+          <Icon icon={ArrowDown} className="text-primary" size={20} />
         </Button>
       )}
     </View>

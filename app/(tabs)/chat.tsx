@@ -6,7 +6,7 @@ import { MessageInput } from "~/components/chatbot/message-input";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MessageList } from "~/components/chatbot/message-list";
 
-export default function App() {
+export default function ChatScreen() {
   const {
     messages,
     error,
@@ -32,6 +32,7 @@ export default function App() {
           className="mt-4"
           value={input}
           status={status}
+          stop={stop}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
         />

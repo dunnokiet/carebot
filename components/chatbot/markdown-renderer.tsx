@@ -16,6 +16,8 @@ export function MarkdownRenderer({ textClassName, children }: MarkdownRendererPr
   );
 }
 
+// TODO Cần thêm styles, rules cho các markdown còn thiếu
+
 const renders = {
   unknown: () => null,
   body: (node: any, children: any) => (
@@ -23,6 +25,8 @@ const renders = {
       {children}
     </View>
   ),
+
+  // FIXME Lỗi có vài components khép lại cần, chắc do thiếu styles hoặc rules :)))
 
   paragraph: createRule(Text),
 };

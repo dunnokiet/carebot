@@ -1,11 +1,10 @@
 import { TextInput, TextInputProps, View } from "react-native";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
-import { Send } from "~/lib/icons/Send";
-import { Mic } from "~/lib/icons/Mic";
-import { Square } from "~/lib/icons/Square";
 import { useCallback, useRef, useState } from "react";
 import { Textarea } from "../ui/textarea";
+import { Mic, Send, Square } from "lucide-react-native";
+import { Icon } from "~/components/icon";
 
 export interface MessageInputProps extends TextInputProps {
   className?: string;
@@ -57,15 +56,15 @@ export function MessageInput({
       />
       <View className="absolute right-4 top-4 z-20 flex-row gap-2">
         <Button size="icon" className="rounded-2xl" variant="outline">
-          <Mic className="text-muted-foreground" size={16} />
+          <Icon icon={Mic} className="h-5 w-5 text-muted-foreground" />
         </Button>
 
         {(status === "submitted" || status === "streaming") && stop ? (
           <Button size="icon" className="rounded-2xl" onPress={stop}>
             <View className="animate-pulse">
-              <Square
-                className="fill-primary-foreground text-primary-foreground"
-                size={14}
+              <Icon
+                icon={Square}
+                className="h-4 w-4 fill-primary-foreground text-primary-foreground"
               />
             </View>
           </Button>
@@ -79,7 +78,7 @@ export function MessageInput({
             }}
             disabled={props.value === "" || status !== "ready"}
           >
-            <Send className="text-primary-foreground" size={16} />
+            <Icon icon={Send} className="h-5 w-5 text-primary-foreground" />
           </Button>
         )}
       </View>
