@@ -18,8 +18,9 @@ export default function ChatScreen() {
     reload,
   } = useChat({
     fetch: expoFetch as unknown as typeof globalThis.fetch,
-    api: generateAPIUrl("/api/chat"),
     onError: (error) => console.error(error, "ERROR"),
+    api: generateAPIUrl("/api/chat/?protocol=text"),
+    streamProtocol: "text",
   });
 
   if (error) return <Text>{error.message}</Text>;
