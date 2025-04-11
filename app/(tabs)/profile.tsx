@@ -1,9 +1,11 @@
-import { View, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, Image, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { Text } from "~/components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "~/components/ui/button";
 import { Icon } from "~/components/icon";
-import { ChevronRight, User, Bell, Globe, Shield, Key, LogOut, LucideIcon } from "lucide-react-native";
+import { ChevronRight, User, Bell, Globe, Shield, Key, LogOut, LogIn, UserPlus, LucideIcon } from "lucide-react-native";
+import { useAuth } from "~/lib/auth-context";
+import { router } from "expo-router";
 
 interface ProfileSectionItemProps {
   icon: LucideIcon;
@@ -48,19 +50,78 @@ const ProfileSection = ({ title, items }: ProfileSectionProps) => (
 );
 
 export default function ProfileScreen() {
-  // Mock user data 
-  const user = {
-    name: "Minh Hieu heheehe",
-    email: "abc@gmail.com",
-    avatar: 'https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/473033380_1587693868777370_7551619117637748749_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEaY7UFAvLojFYJhwtteLlc7pT5THE14fzulPlMcTXh_JSew2ySVD8Buy0C7xvOb8cOZcyd15JaVgzlw6tw1klN&_nc_ohc=xlXrZBsY_v4Q7kNvwFC6FQV&_nc_oc=AdkdC_kaQra3DbJvq8sSPMziwBm1vHOHZGmRNFg3DqABEFgRSaOPpa8ibTTVoufekr0&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=rctuRd6l9gMqfxHm5JjUPg&oh=00_AfGK986GGMHsPgdzUyM1DhZIUu__KMY-3qUrNJvl_JKGlg&oe=67FDB468'
+  const { user, isGuest, signOut, loading } = useAuth();
+  
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error: any) {
+      Alert.alert("Logout Error", error.message);
+    }
   };
 
-  // Profile section items
+  const GuestProfileScreen = () => (
+    <View className="flex-1 items-center justify-center p-6">
+      <Image 
+        source={require('assets/images/welcome.png')} 
+        className="h-64 w-64 mb-4" 
+        resizeMode="contain"
+      />
+      
+      <Text className="text-2xl text-blue-500 font-bold mb-2">Guest Mode</Text>
+      <Text className="text-muted-foreground text-center mb-8">
+        Sign in or create an account to save your progress and access all features
+      </Text>
+      
+      <Button 
+        className="w-full mb-4"
+        onPress={() => {
+          signOut();
+          router.replace('/auth/login');
+        }}
+      >
+        <View className="flex-row items-center">
+          <Icon icon={LogIn} className="mr-2 h-5 w-5 text-primary-foreground" />
+          <Text className="text-primary-foreground">Sign In</Text>
+        </View>
+      </Button>
+      
+      <Button 
+        variant="outline"
+        className="w-full"
+        onPress={() => {
+          signOut();
+          router.replace('/auth/register');
+        }}
+      >
+        <View className="flex-row items-center">
+          <Icon icon={UserPlus} className="mr-2 h-5 w-5" />
+          <Text>Create Account</Text>
+        </View>
+      </Button>
+    </View>
+  );
+
+  if (loading) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" color="#3b82f6" />
+      </View>
+    );
+  }
+
+  if (isGuest) {
+    return (
+      <SafeAreaView className="flex-1 bg-background">
+        <GuestProfileScreen />
+      </SafeAreaView>
+    );
+  }
+
   const accountManagementItems: ProfileSectionItemProps[] = [
     { icon: User, title: "Manage Account", description: "Personal information", onPress: () => {console.log('manage account')} },
     { icon: Shield, title: "Privacy", description: "Data usage and sharing", onPress: () => {console.log('privacy')} },
     { icon: Key, title: "Security", description: "Passwords and verification", onPress: () => {console.log('security')} },
-    { icon: User, title: "Login", description: "Login settings and accounts", onPress: () => {console.log('login')} },
   ];
 
   const contentActivityItems: ProfileSectionItemProps[] = [
@@ -74,11 +135,11 @@ export default function ProfileScreen() {
         {/* User Info Section */}
         <View className="items-center mb-8">
           <Image 
-        source={{ uri: user.avatar }}
-        className="w-24 h-24 rounded-full mb-4"
+            source={{ uri: user?.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user?.displayName || 'User') }}
+            className="w-24 h-24 rounded-full mb-4"
           />
-          <Text className="text-xl font-bold">{user.name}</Text>
-          <Text className="text-muted-foreground">{user.email}</Text>
+          <Text className="text-xl font-bold">{user?.displayName || 'User'}</Text>
+          <Text className="text-muted-foreground">{user?.email}</Text>
         </View>
         
         {/* Account Management Section */}
@@ -97,14 +158,11 @@ export default function ProfileScreen() {
         <Button 
           className="mt-8 mb-10"
           variant="destructive"
-          onPress={() => {
-        // Add logout logic here
-        console.log('Logging out...');
-          }}
+          onPress={handleLogout}
         >
           <View className="flex-row items-center justify-center">
-        <Icon icon={LogOut} className="mr-2 h-5 w-5 text-destructive-foreground" />
-        <Text className="text-destructive-foreground">Log Out</Text>
+            <Icon icon={LogOut} className="mr-2 h-5 w-5 text-destructive-foreground" />
+            <Text className="text-destructive-foreground">Log Out</Text>
           </View>
         </Button>
       </ScrollView>
