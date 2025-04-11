@@ -1,12 +1,9 @@
 import { Tabs } from "expo-router";
+import { TabBar } from "~/components/bottom-tabs";
 
 export default function TabLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarHideOnKeyboard: true,
-      }}
-    >
+    <Tabs tabBar={TabBar} screenOptions={{ headerShown: false }}>
       <Tabs.Screen name="index" />
       <Tabs.Screen name="new" />
       <Tabs.Screen name="chat" />

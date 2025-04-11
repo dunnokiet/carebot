@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "984062761928",
+    "project_id": "carebot-6b039",
+    "storage_bucket": "carebot-6b039.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984062761928:android:4aaa0d75ad63829b57befd",
+        "android_client_info": {
+          "package_name": "com.healthguys.carebot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgfbVK9Gr53cpp0cVVzJiFSz-hT0bERQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

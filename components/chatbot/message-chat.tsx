@@ -82,6 +82,31 @@ export function ChatMessage({
     minute: "2-digit",
   });
 
+
+  if (isUser)
+    return (
+      <View className={cn(isUser ? "items-end" : "items-start")}>
+        <View
+          className={cn(
+            "min-w-16 max-w-xs items-center rounded-3xl p-4 sm:max-w-[70%]",
+            isUser ? "rounded-br-none bg-primary" : "rounded-bl-none bg-muted",
+          )}
+        >
+          <MarkdownRenderer
+            textClassName={cn(
+              "native:text-lg",
+              isUser ? "text-primary-foreground" : "text-foreground",
+            )}
+          >
+            {content}
+          </MarkdownRenderer>
+        </View>
+        {showTimeStamp && createdAt ? (
+          <Text className="mt-1 px-1 text-sm opacity-50">{formattedTime}</Text>
+        ) : null}
+      </View>
+    );
+
   return (
     <View className={cn(isUser ? "items-end" : "items-start")}>
       <View

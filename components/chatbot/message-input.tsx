@@ -60,7 +60,11 @@ export function MessageInput({
         </Button>
 
         {(status === "submitted" || status === "streaming") && stop ? (
-          <Button size="icon" className="rounded-2xl" onPress={stop}>
+          <Button
+            size="icon"
+            className="bg-destructive/ rounded-2xl"
+            onPress={stop}
+          >
             <View className="animate-pulse">
               <Icon
                 icon={Square}
