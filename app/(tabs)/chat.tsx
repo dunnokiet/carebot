@@ -9,21 +9,13 @@ import { ChevronLeft, SquarePen } from "lucide-react-native";
 import { Button } from "~/components/ui/button";
 
 export default function ChatScreen() {
-  const {
-    messages,
-    error,
-    handleInputChange,
-    input,
-    handleSubmit,
-    status,
-    stop,
-    reload,
-  } = useChat({
-    fetch: expoFetch as unknown as typeof globalThis.fetch,
-    onError: (error) => console.error(error, "ERROR"),
-    api: generateAPIUrl("/api/v1/chatbot/conversations/6/messages/stream"),
-    maxSteps: 5,
-  });
+  const { messages, handleInputChange, input, handleSubmit, status, error } =
+    useChat({
+      fetch: expoFetch as unknown as typeof globalThis.fetch,
+      onError: (error) => console.error(error, "ERROR"),
+      api: generateAPIUrl("/api/v1/chatbot/conversations/6/messages/stream"),
+      maxSteps: 5,
+    });
 
   if (error) return <Text>{error.message}</Text>;
 
@@ -46,7 +38,7 @@ export default function ChatScreen() {
           className="mb-4"
           value={input}
           status={status}
-          stop={stop}
+          // handleStop={stop}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
         />

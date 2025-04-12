@@ -5,12 +5,13 @@ import { useCallback, useRef, useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { Mic, Send, Square } from "lucide-react-native";
 import { Icon } from "~/components/icon";
+import { Message } from "./message-chat";
 
 export interface MessageInputProps extends TextInputProps {
   className?: string;
   textAreaClassName?: string;
   status: "error" | "submitted" | "streaming" | "ready";
-  stop?: () => void;
+  handleStop?: () => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event?: { preventDefault?: () => void }) => void;
 }
@@ -20,7 +21,7 @@ export function MessageInput({
   className,
   textAreaClassName,
   status,
-  stop,
+  handleStop,
   handleInputChange,
   handleSubmit,
   ...props
@@ -59,11 +60,12 @@ export function MessageInput({
           <Icon icon={Mic} className="h-5 w-5 text-muted-foreground" />
         </Button>
 
-        {(status === "submitted" || status === "streaming") && stop ? (
+        {(status === "submitted" || status === "streaming") && handleStop ? (
           <Button
             size="icon"
-            className="bg-destructive/ rounded-2xl"
-            onPress={stop}
+            variant="destructive"
+            className="rounded-2xl"
+            onPress={handleStop}
           >
             <View className="animate-pulse">
               <Icon
