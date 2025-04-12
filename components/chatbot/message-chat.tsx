@@ -178,13 +178,14 @@ export function ToolCall({ toolInvocations }: ToolCallProps) {
         switch (invocation.state) {
           case "partial-call":
           case "call":
-            return <></>;
+            return <View key={`call-${index}`}></View>;
           case "result":
             const { toolName } = invocation;
             if (toolName == "show_map")
-              return <View key={index}></View>;
+              return <View key={`map-${index}`}></View>;
+            return <View key={`result-${index}`}></View>;
           default:
-            return null;
+            return <View key={`default-${index}`}></View>;
         }
       })}
     </View>

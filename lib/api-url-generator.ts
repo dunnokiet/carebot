@@ -5,7 +5,7 @@ export const generateAPIUrl = (relativePath: string): string => {
 
   // Nếu đang ở môi trường development
   if (process.env.NODE_ENV === "development") {
-    let origin = "http://localhost:8000"; // fallback mặc định
+    let origin = process.env.DEFAULT_FALLBACK; // fallback mặc định
 
     // Nếu chạy từ Expo Go với experienceUrl, lấy IP thiết bị thay vì localhost
     if (Constants.experienceUrl) {

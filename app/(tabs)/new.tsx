@@ -62,7 +62,7 @@ export default function NewScreen() {
         <View className="mx-4 mb-10">
           <View className="overflow-hidden">
             <Image
-              source={{ uri: "/placeholder.svg?height=200&width=400" }}
+              source={{ uri: "https://media.post.rvohealth.io/wp-content/uploads/2022/12/2681344-A-2023-Hands-On-Review-for-Moonbird-Can-It-Help-Your-Anxiety-1200x628-Facebook_02-1200x628.jpg" }}
               className="h-48 w-full rounded-3xl bg-red-500"
               resizeMode="cover"
             />
