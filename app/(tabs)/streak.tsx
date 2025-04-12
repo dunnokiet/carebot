@@ -1,151 +1,81 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import { Calendar, CheckCircle, Award, Flame } from "lucide-react-native";
+import { View, Image } from "react-native";
+import { Text } from "~/components/ui/text";
+import { useAuth } from "~/lib/auth-context";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/icon";
+import { LogIn, UserPlus } from "lucide-react-native";
+import { router } from "expo-router";
 
-export default function StreakTrackerScreen() {
-  const [currentStreak, setCurrentStreak] = useState(5);
-  const [longestStreak, setLongestStreak] = useState(12);
-  const [todayCompleted, setTodayCompleted] = useState(false);
-
-  const [recentActivity, setRecentActivity] = useState([
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-    false,
-  ]);
-
-  const handleCompleteToday = () => {
-    if (!todayCompleted) {
-      setTodayCompleted(true);
-      setCurrentStreak(currentStreak + 1);
-
-      if (currentStreak + 1 > longestStreak) {
-        setLongestStreak(currentStreak + 1);
-      }
-
-      setRecentActivity([true, ...recentActivity.slice(0, 6)]);
-    }
+export default function StreakScreen() {
+  const { user, isGuest, signOut } = useAuth();
+  // Guest access restriction component
+  const GuestRestrictionScreen = () => {
+    const handleNavigateToLogin = () => {
+      signOut();
+      router.replace('/auth/login');
+    };
+    
+    const handleNavigateToRegister = () => {
+      signOut();
+      router.replace('/auth/register');
+    };
+    
+    return (
+      <View className="flex-1 items-center justify-center p-6">
+        <Image 
+          source={require('assets/images/streak.png')} 
+          className="h-64 w-64 mb-4" 
+          resizeMode="contain"
+        />
+        
+        <Text className="text-2xl font-bold text-blue-500 mb-2 text-center">Feature Restricted</Text>
+        <Text className="text-muted-foreground text-center mb-8">
+          Sign in or create an account to access your streak tracking and progress
+        </Text>
+        
+        <Button 
+          className="w-full mb-4"
+          onPress={handleNavigateToLogin}
+        >
+          <View className="flex-row items-center">
+            <Icon icon={LogIn} className="mr-2 h-5 w-5 text-primary-foreground" />
+            <Text className="text-primary-foreground">Sign In</Text>
+          </View>
+        </Button>
+        
+        <Button 
+          variant="outline"
+          className="w-full"
+          onPress={handleNavigateToRegister}
+        >
+          <View className="flex-row items-center">
+            <Icon icon={UserPlus} className="mr-2 h-5 w-5" />
+            <Text>Create Account</Text>
+          </View>
+        </Button>
+      </View>
+    );
   };
 
-  const today = new Date();
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  // If user is guest, show restriction screen
+  if (isGuest) {
+    return (
+      <SafeAreaView className="flex-1 bg-background">
+        <GuestRestrictionScreen />
+      </SafeAreaView>
+    );
+  }
 
-  const last7Days = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date();
-    date.setDate(today.getDate() - i);
-    return {
-      date: date,
-      dayName: dayNames[date.getDay()],
-      dayNumber: date.getDate(),
-      completed: i === 0 ? todayCompleted : recentActivity[i],
-    };
-  }).reverse();
-
-  const weeklyPercentage = Math.round(
-    (recentActivity.filter((day) => day).length / 7) * 100,
-  );
-
+  // Regular streak screen for authenticated users
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <View>
-            <Text style={styles.title}>Daily Streak</Text>
-            <Text style={styles.description}>Keep your streak going!</Text>
-          </View>
-          <TouchableOpacity style={styles.iconButton}>
-            <Calendar width={20} height={20} color="#666" />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <View style={styles.statValue}>
-              <Flame width={20} height={20} color="#F59E0B" />
-              <Text style={[styles.statNumber, { color: "#F59E0B" }]}>
-                {currentStreak}
-              </Text>
-            </View>
-            <Text style={styles.statLabel}>Current</Text>
-          </View>
-
-          <View style={styles.divider} />
-
-          <View style={styles.statItem}>
-            <View style={styles.statValue}>
-              <Award width={20} height={20} color="#10B981" />
-              <Text style={[styles.statNumber, { color: "#10B981" }]}>
-                {longestStreak}
-              </Text>
-            </View>
-            <Text style={styles.statLabel}>Best</Text>
-          </View>
-
-          <View style={styles.divider} />
-
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{weeklyPercentage}%</Text>
-            <Text style={styles.statLabel}>Weekly</Text>
-          </View>
-        </View>
-
-        <View style={styles.weeklyContainer}>
-          <View style={styles.weeklyHeader}>
-            <Text style={styles.sectionTitle}>This Week</Text>
-            <Text style={styles.weeklyCount}>
-              {recentActivity.filter((day) => day).length}/7 days
-            </Text>
-          </View>
-          <View style={styles.progressContainer}>
-            <View
-              style={[styles.progressBar, { width: `${weeklyPercentage}%` }]}
-            />
-          </View>
-        </View>
-
-        <View style={styles.activityContainer}>
-          <Text style={styles.sectionTitle}>Daily Activity</Text>
-          <View style={styles.daysContainer}>
-            {last7Days.map((day, index) => (
-              <View key={index} style={styles.dayItem}>
-                <Text style={styles.dayName}>{day.dayName}</Text>
-                <View
-                  style={[
-                    styles.dayCircle,
-                    day.completed ? styles.completedDay : styles.missedDay,
-                  ]}
-                >
-                  {day.completed ? (
-                    <CheckCircle width={16} height={16} color="#10B981" />
-                  ) : (
-                    <Text style={styles.dayNumber}>{day.dayNumber}</Text>
-                  )}
-                </View>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        <TouchableOpacity
-          style={[styles.button, todayCompleted ? styles.buttonDisabled : null]}
-          onPress={handleCompleteToday}
-          disabled={todayCompleted}
-        >
-          <Text style={styles.buttonText}>
-            {todayCompleted ? "Completed Today ✓" : "Complete Today's Task"}
-          </Text>
-        </TouchableOpacity>
+    <SafeAreaView className="flex-1 bg-background">
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-2xl font-bold mb-2">Your Streak</Text>
+        <Text className="text-5xl font-bold text-primary mb-4">5</Text>
+        <Text className="text-muted-foreground">Keep going! You're doing great!</Text>
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 
