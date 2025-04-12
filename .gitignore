@@ -42,10 +42,6 @@ yarn-error.*
 
 app-example
 
-# python
-.venv/
-__pycache__
-
 # android
 android/
 
