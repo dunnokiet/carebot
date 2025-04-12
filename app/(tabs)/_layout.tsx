@@ -15,6 +15,11 @@ export default function TabLayout() {
       <Tabs.Screen name="chat" />
       <Tabs.Screen name="streak" />
       <Tabs.Screen name="profile" />
+      <Tabs.Screen name="login" />
+      <Tabs.Screen
+        name="intro"
+        options={{ tabBarStyle: { display: "none" } }}
+      />
     </Tabs>
   );
 }
