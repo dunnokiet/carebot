@@ -3,8 +3,9 @@ import { Text } from "~/components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "~/components/ui/button";
 import { Icon } from "~/components/icon";
-import { ChevronRight, User, Bell, Globe, Shield, Key, LogOut, LogIn, UserPlus, LucideIcon } from "lucide-react-native";
+import { ChevronRight, User, Bell, Globe, Shield, Key, LogOut, LogIn, UserPlus, LucideIcon, BookOpen } from "lucide-react-native";
 import { useAuth } from "~/lib/auth-context";
+import { useOnboarding } from "~/lib/onboarding-context";
 import { router } from "expo-router";
 
 
@@ -62,6 +63,7 @@ const ProfileSection = ({ title, items }: ProfileSectionProps) => (
 
 export default function ProfileScreen() {
   const { user, isGuest, signOut, loading } = useAuth();
+  const { setHasSeenOnboarding } = useOnboarding();
 
   const handleLogout = async () => {
     try {
@@ -70,6 +72,12 @@ export default function ProfileScreen() {
     } catch (error: any) {
       Alert.alert("Logout Error", error.message);
     }
+  };
+
+  const viewOnboarding = async () => {
+    // Reset onboarding flag and navigate to onboarding
+    await setHasSeenOnboarding(false);
+    router.replace("/(tabs)/onboarding");
   };
 
   const GuestProfileScreen = () => (
@@ -110,6 +118,17 @@ export default function ProfileScreen() {
         <View className="flex-row items-center">
           <Icon icon={UserPlus} className="mr-2 h-5 w-5" />
           <Text>Create Account</Text>
+        </View>
+      </Button>
+
+      <Button
+        variant="secondary"
+        className="w-full"
+        onPress={viewOnboarding}
+      >
+        <View className="flex-row items-center">
+          <Icon icon={BookOpen} className="mr-2 h-5 w-5" />
+          <Text>View App Tutorial</Text>
         </View>
       </Button>
     </View>
@@ -174,6 +193,12 @@ export default function ProfileScreen() {
       onPress: () => {
         console.log("language");
       },
+    },
+    {
+      icon: BookOpen,
+      title: "App Tutorial",
+      description: "View the onboarding screens again",
+      onPress: viewOnboarding,
     },
   ];
 
