@@ -1,50 +1,118 @@
-# Welcome to your Expo app 👋
+# Carebot
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Carebot is a comprehensive health and wellness mobile application designed to help users track health habits, access quality health information, and receive personalized health guidance.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Health News**: Browse and read the latest health articles from trusted sources like Healthline
+- **AI Health Assistant**: Chat with an AI-powered health assistant to answer questions and provide guidance
+- **Streak Tracker**: Monitor and maintain your health habits through streak tracking
+- **User Profile**: Personalized user experience with profile customization
+- **Health Information**: Access to a wide range of health topics including nutrition, fitness, mental health, and chronic conditions
 
+## Technologies
+
+Carebot is built using modern mobile development technologies:
+
+- **Expo & React Native**: For cross-platform mobile development
+- **Firebase**: Authentication, data storage, and analytics
+- **NativeWind**: Tailwind CSS for React Native styling
+- **Expo Router**: For navigation within the application
+- **AI/OpenAI Integration**: Powering the conversational health assistant
+- **TypeScript**: For type-safe code
+- **Bun**: Fast JavaScript runtime and package manager
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- Bun (instead of npm/yarn)
+- Expo CLI
+- iOS Simulator or Android Emulator (optional for local testing)
+
+### Installation
+
+1. Clone the repository:
    ```bash
-   npm install
+   git clone https://github.com/yourusername/carebot.git
+   cd carebot
    ```
 
-2. Start the app
-
+2. Install dependencies:
    ```bash
-    npx expo start
+   bun install
    ```
 
-In the output, you'll find options to open the app in a
+3. Set up environment variables:
+   - Create a `.env` file based on `.env.example`
+   - Configure Firebase credentials
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+4. Start the development server:
+   ```bash
+   bunx expo start
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+5. Run on your preferred platform:
+   - Press `i` for iOS simulator
+   - Press `a` for Android emulator
+   - Scan the QR code with Expo Go on your physical device
 
-## Get a fresh project
+## Project Structure
 
-When you're ready, run:
+- **app/**: Main application screens and navigation
+  - **(tabs)/**: Tab-based navigation screens
+  - **(auth)/**: Authentication-related screens
+- **components/**: Reusable UI components
+  - **ui/**: Basic UI elements (buttons, inputs, etc.)
+  - **chatbot/**: Chat interface components
+- **lib/**: Utilities, API integrations, and business logic
+  - **data/**: Data models and static content
+- **assets/**: Images, fonts, and other static resources
+- **styles/**: Global styling configurations
+
+## Key Features Explained
+
+### Health News Feed
+
+The news feed provides curated health articles from Healthline, covering various topics such as nutrition, fitness, mental health, and medical conditions. Users can browse through articles and read in-depth content on topics that interest them.
+
+### AI Health Assistant
+
+The integrated chat system allows users to ask health-related questions and receive evidence-based information. The AI assistant can provide guidance on nutrition, exercise, symptoms, and general wellness topics.
+
+### Streak Tracker
+
+To encourage healthy habit formation, the streak tracker allows users to:
+- Set daily health goals
+- Track their progress
+- Maintain streaks of consistent healthy behaviors
+- Visualize their health journey over time
+
+### Authentication & User Profile
+
+The application provides secure user authentication via Firebase, allowing users to create accounts, save preferences, and track their health journey across devices.
+
+## Development
+
+### Adding New Features
+
+1. Create new components in the appropriate directory
+2. Add screens to the router in `app/` directory
+3. Update navigation if needed
+4. Test on multiple device sizes
+
+### Code Style
+
+The project uses Prettier for code formatting and follows TypeScript best practices. Run linting before commits:
 
 ```bash
-npm run reset-project
+bun run lint
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Acknowledgements
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Healthline for health information
+- Gemini/OpenAI for conversational AI capabilities
+- Firebase for authentication and backend services
+- Expo team for the development platform
