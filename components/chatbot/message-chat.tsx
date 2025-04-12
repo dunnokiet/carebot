@@ -180,7 +180,9 @@ export function ToolCall({ toolInvocations }: ToolCallProps) {
           case "call":
             return <></>;
           case "result":
-            return <></>;
+            const { toolName } = invocation;
+            if (toolName == "show_map")
+              return <View key={index}></View>;
           default:
             return null;
         }

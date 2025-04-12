@@ -50,6 +50,8 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
         const tab = tabs.find((t) => t.name === route.name);
         const renderIcon = tab?.icon;
 
+         if (!tab) return null;
+
         return (
           <PlatformPressable
             key={route.key}

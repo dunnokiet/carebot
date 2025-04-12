@@ -13,11 +13,13 @@ export default function ChatScreen() {
     useChat({
       fetch: expoFetch as unknown as typeof globalThis.fetch,
       onError: (error) => console.error(error, "ERROR"),
-      api: generateAPIUrl("/api/v1/chatbot/conversations/6/messages/stream"),
+      api: generateAPIUrl("api/v1/chatbot/conversations/6/messages/stream"),
       maxSteps: 5,
     });
 
-  if (error) return <Text>{error.message}</Text>;
+  console.log(generateAPIUrl("hehehe"));
+
+  if (error) return <Text>{error.message + "hehehe"}</Text>;
 
   return (
     <View className="flex-1 bg-background">

@@ -1,33 +1,41 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Alert, ActivityIndicator, Image } from 'react-native';
-import { router } from 'expo-router';
-import { Text } from '~/components/ui/text';
-import { Button } from '~/components/ui/button';
-import { useAuth } from '~/lib/auth-context';
-import { Icon } from '~/components/icon';
-import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { GoogleLogo } from '~/components/google-logo';
+import React, { useState } from "react";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+  Image,
+} from "react-native";
+import { router } from "expo-router";
+import { Text } from "~/components/ui/text";
+import { Button } from "~/components/ui/button";
+import { useAuth } from "~/lib/auth-context";
+import { Icon } from "~/components/icon";
+import { Mail, Lock, Eye, EyeOff, LogIn } from "lucide-react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { GoogleLogo } from "~/components/google-logo";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+
   const { signIn, signInWithGoogle, continueAsGuest } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
     setLoading(true);
     try {
       await signIn(email, password);
+      router.push("/(tabs)/home");
     } catch (error: any) {
-      Alert.alert('Login Error', error.message);
+      Alert.alert("Login Error", error.message);
     } finally {
       setLoading(false);
     }
@@ -38,10 +46,10 @@ export default function LoginScreen() {
     try {
       const result = await signInWithGoogle();
       if (!result) {
-        Alert.alert('Error', 'Google sign in failed');
+        Alert.alert("Error", "Google sign in failed");
       }
     } catch (error: any) {
-      Alert.alert('Google Sign In Error', error.message);
+      Alert.alert("Google Sign In Error", error.message);
     } finally {
       setLoading(false);
     }
@@ -53,29 +61,33 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background">
-      <View className="flex-1 p-6 justify-center">
+      <View className="flex-1 justify-center p-6">
         {/* Logo and Title */}
-        <View className="items-center mb-10">
-          <Image 
-            source={require('assets/images/welcome.png')} 
-            className="h-64 w-64 mb-4" 
+        <View className="mb-10 items-center">
+          <Image
+            source={require("assets/images/welcome.png")}
+            className="mb-4 h-64 w-64"
             resizeMode="contain"
           />
-          <Text className="text-2xl text-blue-500 font-bold">Welcome to Carebot</Text>
-          <Text className="text-muted-foreground text-center mt-2">
+          <Text className="text-2xl font-bold text-blue-500">
+            Welcome to Carebot
+          </Text>
+          <Text className="mt-2 text-center text-muted-foreground">
             Sign in to access all features
           </Text>
         </View>
 
         {/* Email Input */}
         <View className="mb-4">
-          <Text className="text-sm font-medium text-foreground mb-2">Email</Text>
+          <Text className="mb-2 text-sm font-medium text-foreground">
+            Email
+          </Text>
           <View className="relative">
-            <View className="absolute top-3 left-3 z-10">
-              <Icon icon={Mail} className="text-muted-foreground h-5 w-5" />
+            <View className="absolute left-3 top-3 z-10">
+              <Icon icon={Mail} className="h-5 w-5 text-muted-foreground" />
             </View>
             <TextInput
-              className="bg-card px-10 py-3 rounded-lg border border-input text-foreground"
+              className="rounded-lg border border-input bg-card px-10 py-3 text-foreground"
               placeholder="Enter your email"
               placeholderTextColor="#9ca3af"
               value={email}
@@ -88,55 +100,56 @@ export default function LoginScreen() {
 
         {/* Password Input */}
         <View className="mb-6">
-          <Text className="text-sm font-medium text-foreground mb-2">Password</Text>
+          <Text className="mb-2 text-sm font-medium text-foreground">
+            Password
+          </Text>
           <View className="relative">
-            <View className="absolute top-3 left-3 z-10">
-              <Icon icon={Lock} className="text-muted-foreground h-5 w-5" />
+            <View className="absolute left-3 top-3 z-10">
+              <Icon icon={Lock} className="h-5 w-5 text-muted-foreground" />
             </View>
             <TextInput
-              className="bg-card px-10 py-3 rounded-lg border border-input text-foreground"
+              className="rounded-lg border border-input bg-card px-10 py-3 text-foreground"
               placeholder="Enter your password"
               placeholderTextColor="#9ca3af"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
             />
-            <TouchableOpacity 
-              className="absolute right-3 top-3 z-10" 
+            <TouchableOpacity
+              className="absolute right-3 top-3 z-10"
               onPress={() => setShowPassword(!showPassword)}
             >
-              <Icon 
-                icon={showPassword ? Eye : EyeOff} 
-                className="text-muted-foreground h-5 w-5" 
+              <Icon
+                icon={showPassword ? Eye : EyeOff}
+                className="h-5 w-5 text-muted-foreground"
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity 
-            className="self-end mt-2" 
-            onPress={() => router.push('/auth/forgot-password')}
+          <TouchableOpacity
+            className="mt-2 self-end"
+            onPress={() => router.push("/(auth)/forgot-password")}
           >
             <Text className="text-sm text-primary">Forgot Password?</Text>
           </TouchableOpacity>
         </View>
 
         {/* Login Button */}
-        <Button 
-          className="mb-4 py-3"
-          onPress={handleLogin}
-          disabled={loading}
-        >
+        <Button className="mb-4 py-3" onPress={handleLogin} disabled={loading}>
           {loading ? (
             <ActivityIndicator color="#fff" size="small" />
           ) : (
             <View className="flex-row items-center">
-              <Icon icon={LogIn} className="mr-2 h-5 w-5 text-primary-foreground" />
-              <Text className="text-primary-foreground font-medium">Login</Text>
+              <Icon
+                icon={LogIn}
+                className="mr-2 h-5 w-5 text-primary-foreground"
+              />
+              <Text className="font-medium text-primary-foreground">Login</Text>
             </View>
           )}
         </Button>
 
         {/* Continue as Guest Button */}
-        <Button 
+        <Button
           variant="outline"
           className="mb-4"
           onPress={handleGuestAccess}
@@ -146,10 +159,10 @@ export default function LoginScreen() {
         </Button>
 
         {/* Social Login Divider */}
-        <View className="flex-row items-center justify-center my-4">
-          <View className="flex-1 h-[1px] bg-border" />
+        <View className="my-4 flex-row items-center justify-center">
+          <View className="h-[1px] flex-1 bg-border" />
           <Text className="mx-4 text-muted-foreground">or continue with</Text>
-          <View className="flex-1 h-[1px] bg-border" />
+          <View className="h-[1px] flex-1 bg-border" />
         </View>
 
         {/* Google Sign In Button */}
@@ -166,10 +179,10 @@ export default function LoginScreen() {
         </Button>
 
         {/* Sign Up Link */}
-        <View className="flex-row justify-center mt-4">
+        <View className="mt-4 flex-row justify-center">
           <Text className="text-muted-foreground">Don't have an account? </Text>
-          <TouchableOpacity onPress={() => router.push('/auth/register')}>
-            <Text className="text-primary font-medium">Sign Up</Text>
+          <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
+            <Text className="font-medium text-primary">Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>

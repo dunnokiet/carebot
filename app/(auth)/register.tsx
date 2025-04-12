@@ -1,38 +1,45 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Alert, ActivityIndicator, ScrollView } from 'react-native';
-import { router } from 'expo-router';
-import { Text } from '~/components/ui/text';
-import { Button } from '~/components/ui/button';
-import { useAuth } from '~/lib/auth-context';
-import { Icon } from '~/components/icon';
-import { Mail, Lock, Eye, EyeOff, User, ArrowLeft } from 'lucide-react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { GoogleLogo } from '~/components/google-logo';
+import React, { useState } from "react";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+  ScrollView,
+} from "react-native";
+import { router } from "expo-router";
+import { Text } from "~/components/ui/text";
+import { Button } from "~/components/ui/button";
+import { useAuth } from "~/lib/auth-context";
+import { Icon } from "~/components/icon";
+import { Mail, Lock, Eye, EyeOff, User, ArrowLeft } from "lucide-react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { GoogleLogo } from "~/components/google-logo";
 
 export default function RegisterScreen() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+
   const { signUp, signInWithGoogle } = useAuth();
 
   const handleRegister = async () => {
     if (!name || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert("Error", "Passwords do not match");
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters long');
+      Alert.alert("Error", "Password must be at least 6 characters long");
       return;
     }
 
@@ -40,7 +47,7 @@ export default function RegisterScreen() {
     try {
       await signUp(email, password, name);
     } catch (error: any) {
-      Alert.alert('Registration Error', error.message);
+      Alert.alert("Registration Error", error.message);
     } finally {
       setLoading(false);
     }
@@ -51,10 +58,10 @@ export default function RegisterScreen() {
     try {
       const result = await signInWithGoogle();
       if (!result) {
-        Alert.alert('Error', 'Google sign in failed');
+        Alert.alert("Error", "Google sign in failed");
       }
     } catch (error: any) {
-      Alert.alert('Google Sign In Error', error.message);
+      Alert.alert("Google Sign In Error", error.message);
     } finally {
       setLoading(false);
     }
@@ -64,31 +71,31 @@ export default function RegisterScreen() {
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView contentContainerClassName="p-6">
         {/* Header with back button */}
-        <TouchableOpacity 
-          onPress={() => router.back()} 
+        <TouchableOpacity
+          onPress={() => router.back()}
           className="mb-6 flex-row items-center"
         >
-          <Icon icon={ArrowLeft} className="h-5 w-5 text-foreground mr-2" />
+          <Icon icon={ArrowLeft} className="mr-2 h-5 w-5 text-foreground" />
           <Text>Back to Login</Text>
         </TouchableOpacity>
-        
+
         {/* Title */}
         <View className="mb-8">
           <Text className="text-2xl font-bold">Create an Account</Text>
-          <Text className="text-muted-foreground mt-2">
+          <Text className="mt-2 text-muted-foreground">
             Sign up to get started with Carebot
           </Text>
         </View>
 
         {/* Name Input */}
         <View className="mb-4">
-          <Text className="text-sm font-medium text-foreground mb-2">Name</Text>
+          <Text className="mb-2 text-sm font-medium text-foreground">Name</Text>
           <View className="relative">
-            <View className="absolute top-3 left-3 z-10">
-              <Icon icon={User} className="text-muted-foreground h-5 w-5" />
+            <View className="absolute left-3 top-3 z-10">
+              <Icon icon={User} className="h-5 w-5 text-muted-foreground" />
             </View>
             <TextInput
-              className="bg-card px-10 py-3 rounded-lg border border-input text-foreground"
+              className="rounded-lg border border-input bg-card px-10 py-3 text-foreground"
               placeholder="Enter your name"
               placeholderTextColor="#9ca3af"
               value={name}
@@ -99,13 +106,15 @@ export default function RegisterScreen() {
 
         {/* Email Input */}
         <View className="mb-4">
-          <Text className="text-sm font-medium text-foreground mb-2">Email</Text>
+          <Text className="mb-2 text-sm font-medium text-foreground">
+            Email
+          </Text>
           <View className="relative">
-            <View className="absolute top-3 left-3 z-10">
-              <Icon icon={Mail} className="text-muted-foreground h-5 w-5" />
+            <View className="absolute left-3 top-3 z-10">
+              <Icon icon={Mail} className="h-5 w-5 text-muted-foreground" />
             </View>
             <TextInput
-              className="bg-card px-10 py-3 rounded-lg border border-input text-foreground"
+              className="rounded-lg border border-input bg-card px-10 py-3 text-foreground"
               placeholder="Enter your email"
               placeholderTextColor="#9ca3af"
               value={email}
@@ -118,26 +127,28 @@ export default function RegisterScreen() {
 
         {/* Password Input */}
         <View className="mb-4">
-          <Text className="text-sm font-medium text-foreground mb-2">Password</Text>
+          <Text className="mb-2 text-sm font-medium text-foreground">
+            Password
+          </Text>
           <View className="relative">
-            <View className="absolute top-3 left-3 z-10">
-              <Icon icon={Lock} className="text-muted-foreground h-5 w-5" />
+            <View className="absolute left-3 top-3 z-10">
+              <Icon icon={Lock} className="h-5 w-5 text-muted-foreground" />
             </View>
             <TextInput
-              className="bg-card px-10 py-3 rounded-lg border border-input text-foreground"
+              className="rounded-lg border border-input bg-card px-10 py-3 text-foreground"
               placeholder="Create a password"
               placeholderTextColor="#9ca3af"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
             />
-            <TouchableOpacity 
-              className="absolute right-3 top-3 z-10" 
+            <TouchableOpacity
+              className="absolute right-3 top-3 z-10"
               onPress={() => setShowPassword(!showPassword)}
             >
-              <Icon 
-                icon={showPassword ? Eye : EyeOff} 
-                className="text-muted-foreground h-5 w-5" 
+              <Icon
+                icon={showPassword ? Eye : EyeOff}
+                className="h-5 w-5 text-muted-foreground"
               />
             </TouchableOpacity>
           </View>
@@ -145,33 +156,35 @@ export default function RegisterScreen() {
 
         {/* Confirm Password Input */}
         <View className="mb-6">
-          <Text className="text-sm font-medium text-foreground mb-2">Confirm Password</Text>
+          <Text className="mb-2 text-sm font-medium text-foreground">
+            Confirm Password
+          </Text>
           <View className="relative">
-            <View className="absolute top-3 left-3 z-10">
-              <Icon icon={Lock} className="text-muted-foreground h-5 w-5" />
+            <View className="absolute left-3 top-3 z-10">
+              <Icon icon={Lock} className="h-5 w-5 text-muted-foreground" />
             </View>
             <TextInput
-              className="bg-card px-10 py-3 rounded-lg border border-input text-foreground"
+              className="rounded-lg border border-input bg-card px-10 py-3 text-foreground"
               placeholder="Confirm your password"
               placeholderTextColor="#9ca3af"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry={!showConfirmPassword}
             />
-            <TouchableOpacity 
-              className="absolute right-3 top-3 z-10" 
+            <TouchableOpacity
+              className="absolute right-3 top-3 z-10"
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
             >
-              <Icon 
-                icon={showConfirmPassword ? Eye : EyeOff} 
-                className="text-muted-foreground h-5 w-5" 
+              <Icon
+                icon={showConfirmPassword ? Eye : EyeOff}
+                className="h-5 w-5 text-muted-foreground"
               />
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Register Button */}
-        <Button 
+        <Button
           className="mb-4 py-3"
           onPress={handleRegister}
           disabled={loading}
@@ -179,15 +192,17 @@ export default function RegisterScreen() {
           {loading ? (
             <ActivityIndicator color="#fff" size="small" />
           ) : (
-            <Text className="text-primary-foreground font-medium">Create Account</Text>
+            <Text className="font-medium text-primary-foreground">
+              Create Account
+            </Text>
           )}
         </Button>
 
         {/* Social Login Divider */}
-        <View className="flex-row items-center justify-center my-4">
-          <View className="flex-1 h-[1px] bg-border" />
+        <View className="my-4 flex-row items-center justify-center">
+          <View className="h-[1px] flex-1 bg-border" />
           <Text className="mx-4 text-muted-foreground">or sign up with</Text>
-          <View className="flex-1 h-[1px] bg-border" />
+          <View className="h-[1px] flex-1 bg-border" />
         </View>
 
         {/* Google Sign In Button */}
@@ -204,10 +219,12 @@ export default function RegisterScreen() {
         </Button>
 
         {/* Sign In Link */}
-        <View className="flex-row justify-center mt-4 mb-6">
-          <Text className="text-muted-foreground">Already have an account? </Text>
-          <TouchableOpacity onPress={() => router.push('/auth/login')}>
-            <Text className="text-primary font-medium">Sign In</Text>
+        <View className="mb-6 mt-4 flex-row justify-center">
+          <Text className="text-muted-foreground">
+            Already have an account?{" "}
+          </Text>
+          <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
+            <Text className="font-medium text-primary">Sign In</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
