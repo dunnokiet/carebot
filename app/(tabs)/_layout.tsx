@@ -1,3 +1,4 @@
+// (tabs)/_layout.tsx
 import { Tabs } from "expo-router";
 import { TabBar } from "~/components/bottom-tabs";
 
