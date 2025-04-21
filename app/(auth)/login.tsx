@@ -41,19 +41,23 @@ export default function LoginScreen() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      const result = await signInWithGoogle();
-      if (!result) {
-        Alert.alert("Error", "Google sign in failed");
+    const handleGoogleSignIn = async () => {
+      setLoading(true);
+      try {
+        const result = await signInWithGoogle();
+        if (!result) {
+          Alert.alert("Error", "Google sign in failed");
+        } else {
+          // ✅ Điều hướng nếu đăng nhập thành công
+          router.push("/(tabs)/home");
+        }
+      } catch (error: any) {
+        Alert.alert("Google Sign In Error", error.message);
+      } finally {
+        setLoading(false);
       }
-    } catch (error: any) {
-      Alert.alert("Google Sign In Error", error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
 
   const handleGuestAccess = () => {
     continueAsGuest();

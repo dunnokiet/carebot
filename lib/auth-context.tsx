@@ -1,139 +1,154 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import firebase from '@react-native-firebase/app';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  ReactNode,
+} from 'react';
 import { Platform } from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {
+  initializeApp,
+  getApp,
+} from '@react-native-firebase/app';
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  sendPasswordResetEmail,
+  signInWithCredential,
+  GoogleAuthProvider,
+  updateProfile as updateUserProfile,
+  type User,
+  type UserCredential,
+} from '@react-native-firebase/auth';
 
-
-
-// Define the shape of our context
+// Context type
 type AuthContextType = {
-  user: FirebaseAuthTypes.User | null;
+  user: User | null;
   isGuest: boolean;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<FirebaseAuthTypes.UserCredential>;
-  signUp: (email: string, password: string, displayName: string) => Promise<FirebaseAuthTypes.UserCredential>;
+  signIn: (email: string, password: string) => Promise<UserCredential>;
+  signUp: (email: string, password: string, displayName: string) => Promise<UserCredential>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
-  signInWithGoogle: () => Promise<FirebaseAuthTypes.UserCredential | null>;
+  signInWithGoogle: () => Promise<UserCredential | null>;
   updateProfile: (data: { displayName?: string; photoURL?: string }) => Promise<void>;
   continueAsGuest: () => void;
 };
 
+// Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Firebase initialization
+const initFirebaseApp = () => {
+  try {
+    getApp();
+  } catch {
+    const firebaseConfig = {
+      apiKey: Platform.OS === 'ios'
+        ? process.env.EXPO_PUBLIC_FIREBASE_API_KEY_IOS
+        : process.env.EXPO_PUBLIC_FIREBASE_API_KEY_ANDROID,
+      appId: Platform.OS === 'ios'
+        ? process.env.EXPO_PUBLIC_FIREBASE_APP_ID_IOS
+        : process.env.EXPO_PUBLIC_FIREBASE_APP_ID_ANDROID,
+      projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+      authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      databaseURL: process.env.EXPO_PUBLIC_FIREBASE_DATABASE_URL,
+      storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    };
+    initializeApp(firebaseConfig);
+  }
+};
+
+// Google Sign-In setup
+const configureGoogleSignIn = () => {
+  GoogleSignin.configure({
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+  });
+};
+
+// Provider component
 export function AuthProvider({ children }: { readonly children: ReactNode }) {
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const [isGuest, setIsGuest] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isGuest, setIsGuest] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Initialize Firebase if it hasn't been initialized yet
   useEffect(() => {
-    if (!firebase.apps.length) {
-        const firebaseConfig = {
-          apiKey:
-            Platform.OS === 'ios'
-              ? process.env.EXPO_PUBLIC_FIREBASE_API_KEY_IOS
-              : process.env.EXPO_PUBLIC_FIREBASE_API_KEY_ANDROID,
-          appId:
-            Platform.OS === 'ios'
-              ? process.env.EXPO_PUBLIC_FIREBASE_APP_ID_IOS
-              : process.env.EXPO_PUBLIC_FIREBASE_APP_ID_ANDROID,
-          projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
-          authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
-          databaseURL: process.env.EXPO_PUBLIC_FIREBASE_DATABASE_URL,
-          storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
-          messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-        };
-
-      firebase.initializeApp(firebaseConfig);
-    }
+    initFirebaseApp();
+    configureGoogleSignIn();
   }, []);
 
-  // Initialize GoogleSignin
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
-    });
-
-  }, []);
-
-  // Handle user state changes
-  useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((user) => {
-      setUser(user);
-      if (user) {
-        setIsGuest(false);
-      }
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setIsGuest(!currentUser);
       setLoading(false);
     });
-
-    // Cleanup subscription on unmount
     return unsubscribe;
   }, []);
 
-  // Continue as guest function
   const continueAsGuest = () => {
-    setIsGuest(true);
     setUser(null);
+    setIsGuest(true);
     setLoading(false);
   };
 
-  // Sign in with email and password
   const signIn = async (email: string, password: string) => {
     setIsGuest(false);
-    return await auth().signInWithEmailAndPassword(email, password);
+    return signInWithEmailAndPassword(getAuth(), email, password);
   };
 
-  // Sign up with email and password
   const signUp = async (email: string, password: string, displayName: string) => {
     setIsGuest(false);
-    const credential = await auth().createUserWithEmailAndPassword(email, password);
-    await credential.user.updateProfile({ displayName });
+    const auth = getAuth();
+    const credential = await createUserWithEmailAndPassword(auth, email, password);
+    if (credential.user) {
+      await updateUserProfile(credential.user, { displayName });
+    }
     return credential;
   };
 
-  // Sign out
   const signOut = async () => {
     if (isGuest) {
       setIsGuest(false);
       return Promise.resolve();
     }
-    return await auth().signOut();
+    return firebaseSignOut(getAuth());
   };
 
-  // Reset password
   const resetPassword = async (email: string) => {
-    await auth().sendPasswordResetEmail(email);
+    return sendPasswordResetEmail(getAuth(), email);
   };
 
-  // Sign in with Google
-  const signInWithGoogle = async () => {
-    try {
-      setIsGuest(false);
-      await GoogleSignin.hasPlayServices();
-      
-      await GoogleSignin.signIn();
-      
-      const { idToken } = await GoogleSignin.getTokens();
-      
-      if (!idToken) {
-        throw new Error('No ID token present in Google Sign-In response');
+    const signInWithGoogle = async () => {
+      try {
+        setIsGuest(false);
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        const userInfo = await GoogleSignin.signIn();
+        const { idToken } = await GoogleSignin.getTokens();
+
+        if (!idToken) throw new Error('Missing Google ID Token');
+
+        const googleCredential = GoogleAuthProvider.credential(idToken);
+        const auth = getAuth();
+        const result = await signInWithCredential(auth, googleCredential);
+        return result;
+      } catch (error: any) {
+        console.error('Google Sign-In Error:', error.code, error.message, error);
+        return null;
       }
+    };
 
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-      return await auth().signInWithCredential(googleCredential);
-    } catch (error) {
-      console.error("Google sign in error:", error);
-      return null;
-    }
-  };
-
-  // Update user profile
   const updateProfile = async (data: { displayName?: string; photoURL?: string }) => {
     if (user) {
-      await user.updateProfile(data);
+      await updateUserProfile(user, data);
     }
   };
 
@@ -147,16 +162,20 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
     resetPassword,
     signInWithGoogle,
     updateProfile,
-    continueAsGuest
+    continueAsGuest,
   }), [user, isGuest, loading]);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-// Custom hook to use the auth context
+// Custom hook
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
