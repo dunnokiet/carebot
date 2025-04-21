@@ -3,18 +3,8 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import firebase from '@react-native-firebase/app';
 import { Platform } from 'react-native';
-import {
-  FIREBASE_API_KEY_ANDROID,
-  FIREBASE_API_KEY_IOS,
-  FIREBASE_PROJECT_ID,
-  FIREBASE_APP_ID_ANDROID,
-  FIREBASE_APP_ID_IOS,
-  FIREBASE_DATABASE_URL,
-  FIREBASE_STORAGE_BUCKET,
-  FIREBASE_AUTH_DOMAIN,
-  FIREBASE_MESSAGING_SENDER_ID,
-  GOOGLE_WEB_CLIENT_ID,
-} from '@env';
+
+
 
 // Define the shape of our context
 type AuthContextType = {
@@ -40,16 +30,22 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
   // Initialize Firebase if it hasn't been initialized yet
   useEffect(() => {
     if (!firebase.apps.length) {
-      const firebaseConfig = {
-        apiKey: Platform.OS === 'ios' ? FIREBASE_API_KEY_IOS : FIREBASE_API_KEY_ANDROID,
-        appId: Platform.OS === 'ios' ? FIREBASE_APP_ID_IOS : FIREBASE_APP_ID_ANDROID,
-        projectId: FIREBASE_PROJECT_ID,
-        authDomain: FIREBASE_AUTH_DOMAIN,
-        databaseURL: FIREBASE_DATABASE_URL,
-        storageBucket: FIREBASE_STORAGE_BUCKET,
-        messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
-      };
-      
+        const firebaseConfig = {
+          apiKey:
+            Platform.OS === 'ios'
+              ? process.env.EXPO_PUBLIC_FIREBASE_API_KEY_IOS
+              : process.env.EXPO_PUBLIC_FIREBASE_API_KEY_ANDROID,
+          appId:
+            Platform.OS === 'ios'
+              ? process.env.EXPO_PUBLIC_FIREBASE_APP_ID_IOS
+              : process.env.EXPO_PUBLIC_FIREBASE_APP_ID_ANDROID,
+          projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+          authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+          databaseURL: process.env.EXPO_PUBLIC_FIREBASE_DATABASE_URL,
+          storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+          messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+        };
+
       firebase.initializeApp(firebaseConfig);
     }
   }, []);
@@ -57,8 +53,9 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
   // Initialize GoogleSignin
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: GOOGLE_WEB_CLIENT_ID,
+      webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
     });
+
   }, []);
 
   // Handle user state changes

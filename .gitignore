@@ -48,6 +48,7 @@ android/
 # ios
 ios/
 
+.idea/
 # Firebase
 google-services.json
 GoogleService-Info.plist
