@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Calendar, CheckCircle, Award, Flame } from "lucide-react-native";
+import { Calendar, CheckCircle, Award, Flame, Camera } from "lucide-react-native";
+import { router } from "expo-router";
 
 export default function StreakTrackerScreen() {
   const [currentStreak, setCurrentStreak] = useState(5);
@@ -36,6 +37,11 @@ export default function StreakTrackerScreen() {
     }
   };
 
+  const handleOpenCamera = () => {
+    // Navigate to the camera screen using expo-router
+    router.push("/camera");
+  };
+
   const today = new Date();
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -62,9 +68,14 @@ export default function StreakTrackerScreen() {
             <Text style={styles.title}>Daily Streak</Text>
             <Text style={styles.description}>Keep your streak going!</Text>
           </View>
-          <TouchableOpacity style={styles.iconButton}>
-            <Calendar width={20} height={20} color="#666" />
-          </TouchableOpacity>
+          <View style={styles.headerButtons}>
+            <TouchableOpacity style={styles.iconButton} onPress={handleOpenCamera}>
+              <Camera width={20} height={20} color="#666" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton}>
+              <Calendar width={20} height={20} color="#666" />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.statsContainer}>
@@ -144,6 +155,14 @@ export default function StreakTrackerScreen() {
             {todayCompleted ? "Completed Today ✓" : "Complete Today's Task"}
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.cameraButton}
+          onPress={handleOpenCamera}
+        >
+          <Camera width={20} height={20} color="#fff" />
+          <Text style={styles.cameraButtonText}>Track Workout with Camera</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -171,6 +190,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 16,
   },
+  headerButtons: {
+    flexDirection: "row",
+  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
@@ -185,6 +207,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 20,
     backgroundColor: "#f5f5f5",
+    marginLeft: 8,
   },
   statsContainer: {
     flexDirection: "row",
@@ -282,6 +305,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     alignItems: "center",
+    marginBottom: 12,
   },
   buttonDisabled: {
     backgroundColor: "#93C5FD",
@@ -290,5 +314,19 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
     fontSize: 16,
+  },
+  cameraButton: {
+    backgroundColor: "#6366F1",
+    borderRadius: 8,
+    padding: 16,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  cameraButtonText: {
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: 16,
+    marginLeft: 8,
   },
 });
