@@ -1,6 +1,6 @@
 import React from "react";
 import { Stack } from "expo-router";
-import CameraOnlyTest from "~/components/streak/camera";
+import MediaPipeCam from "~/components/streak/camera";
 
 export default function CameraRoute() {
   return (
@@ -11,7 +11,7 @@ export default function CameraRoute() {
           presentation: "fullScreenModal",
         }}
       />
-      <CameraOnlyTest />
+      <MediaPipeCam />
     </>
   );
 }

@@ -11,8 +11,14 @@ import { useCameraDevice, useCameraPermission, Camera } from 'react-native-visio
 import * as FileSystem from 'expo-file-system';
 import { Skia, Canvas, Path, vec, SkPoint } from '@shopify/react-native-skia';
 import { useRouter } from 'expo-router'; // For navigation
+import { useAuth } from '~/lib/auth-context';
+import { useLocalSearchParams } from 'expo-router';
+import firestore, { doc, getDoc, setDoc } from '@react-native-firebase/firestore'; // ✅
 
-export default function CameraOnlyTest() {
+export const db = firestore();
+console.log('Firestore Initialized:', db);
+
+export default function MediaPipeCam() {
   const router = useRouter();
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice('front');
@@ -22,11 +28,30 @@ export default function CameraOnlyTest() {
   const [isModelReady, setIsModelReady] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const { user, isGuest } = useAuth();
+  const { challengeLevel = 'easy', current_reps = '0' } = useLocalSearchParams();
+
+  // Debug log to see what params we're receiving
+  console.log('Camera received params:', { challengeLevel, current_reps });
+
+  const repsGoal = challengeLevel === 'easy' ? 5 : challengeLevel === 'medium' ? 10 : 20;
+
   const [connections, setConnections] = useState<SkPoint[]>([]);
   const [wasDown, setWasDown] = useState(false);
   const [isCounting, setIsCounting] = useState(false);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0); // Initialize with 0
   const [countdown, setCountdown] = useState<number | null>(null); // Countdown state
+
+  // Update count from navigation params when they change
+  useEffect(() => {
+    if (current_reps) {
+      const parsedCount = parseInt(current_reps as string);
+      if (!isNaN(parsedCount)) {
+        console.log('Updating count from params:', parsedCount);
+        setCount(parsedCount);
+      }
+    }
+  }, [current_reps]);
 
   const onResults = useCallback((results: any, vc: any) => {
     if (!isCounting || results.results?.[0]?.landmarks?.[0]?.length === 0) return;
@@ -157,11 +182,81 @@ export default function CameraOnlyTest() {
     setIsCounting(false);
   };
 
-  const handleEnd = () => {
-    router.push({
-      pathname: '/streak',
-      params: { reps: count },
-    });
+  const handleEnd = async () => {
+    setIsCounting(false);
+
+    if (!user || !user.uid) {
+      console.log('User is not authenticated or UID is missing');
+      router.push({
+        pathname: '/streak',
+        params: { reps: count.toString() },
+      });
+      return;
+    }
+
+    console.log(`Completed ${count}/${repsGoal} reps`);
+
+    if (count >= repsGoal && user && !isGuest) {
+      const userRef = doc(db, 'users', user.uid);
+
+      try {
+        const userSnap = await getDoc(userRef);
+        let updatedCurrentStreak = 1;
+        let updatedLongestStreak = 1;
+
+        if (!userSnap.exists) {
+          // Create new user document if it doesn't exist
+          await setDoc(userRef, {
+            current_streak: updatedCurrentStreak,
+            longest_streak: updatedLongestStreak,
+            last_completed: new Date().toISOString(),
+            current_reps: count,
+            todayCompleted: true
+          });
+          console.log('✅ Created new user streak data.');
+        } else {
+          const data = userSnap.data();
+          updatedCurrentStreak = (data.current_streak || 0) + 1;
+          updatedLongestStreak = Math.max(updatedCurrentStreak, data.longest_streak || 0);
+
+          await setDoc(
+            userRef,
+            {
+              current_streak: updatedCurrentStreak,
+              longest_streak: updatedLongestStreak,
+              last_completed: new Date().toISOString(),
+              current_reps: count,
+              todayCompleted: true
+            },
+            { merge: true }
+          );
+          console.log('✅ Updated existing user streak data.');
+        }
+
+        // Use the defined variables for navigation
+        router.replace({
+          pathname: '/streak',
+          params: {
+            reps: count.toString(),
+            current_streak: updatedCurrentStreak.toString(),
+            longest_streak: updatedLongestStreak.toString()
+          },
+        });
+      } catch (error) {
+        console.error('❌ Error fetching or updating user data:', error);
+        // Still navigate even if there's an error
+        router.replace({
+          pathname: '/streak',
+          params: { reps: count.toString() },
+        });
+      }
+    } else {
+      // Navigate with current count even if goal not reached
+      router.replace({
+        pathname: '/streak',
+        params: { reps: count.toString() },
+      });
+    }
   };
 
   if (isReady) {

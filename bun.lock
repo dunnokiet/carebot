@@ -7,9 +7,11 @@
         "@ai-sdk/openai": "^1.3.4",
         "@ai-sdk/react": "^1.2.3",
         "@expo/vector-icons": "^14.0.2",
+        "@react-native-community/slider": "^4.5.6",
         "@react-native-firebase/app": "^21.13.0",
         "@react-native-firebase/auth": "^21.13.0",
         "@react-native-firebase/crashlytics": "^21.13.0",
+        "@react-native-firebase/firestore": "^21.14.0",
         "@react-native-google-signin/google-signin": "^13.2.0",
         "@react-navigation/bottom-tabs": "^7.2.0",
         "@react-navigation/native": "^7.0.14",
@@ -573,11 +575,15 @@
 
     "@radix-ui/react-slot": ["@radix-ui/react-slot@1.0.1", "", { "dependencies": { "@babel/runtime": "^7.13.10", "@radix-ui/react-compose-refs": "1.0.0" }, "peerDependencies": { "react": "^16.8 || ^17.0 || ^18.0" } }, "sha512-avutXAFL1ehGvAXtPquu0YK5oz6ctS474iM3vNGQIkswrVhdrS52e3uoMQBzZhNRAIE0jBnUyXWNmSjGHhCFcw=="],
 
+    "@react-native-community/slider": ["@react-native-community/slider@4.5.6", "", {}, "sha512-UhLPFeqx0YfPLrEz8ffT3uqAyXWu6iqFjohNsbp4cOU7hnJwg2RXtDnYHoHMr7MOkZDVdlLMdrSrAuzY6KGqrg=="],
+
     "@react-native-firebase/app": ["@react-native-firebase/app@21.13.0", "", { "dependencies": { "firebase": "11.3.1" }, "peerDependencies": { "expo": ">=47.0.0", "react": "*", "react-native": "*" }, "optionalPeers": ["expo"] }, "sha512-UjM+yTTuBTQkGQHSTmJtKoXumgWxN+G90q6TCBqf2fQzAGhWpeMQSKOpD3arW+gmmO2eNIb1P8wyMYQk9GeGVA=="],
 
     "@react-native-firebase/auth": ["@react-native-firebase/auth@21.13.0", "", { "dependencies": { "plist": "^3.1.0" }, "peerDependencies": { "@react-native-firebase/app": "21.13.0", "expo": ">=47.0.0" }, "optionalPeers": ["expo"] }, "sha512-oM4PgOmh5xSB+pDQil5ATbEZ48AxBU2lC6EJCDCcSf5LqdWwOm8LA3Ew1ffJnCQJ0RafH7eSrYpFgnxR2y2sPg=="],
 
     "@react-native-firebase/crashlytics": ["@react-native-firebase/crashlytics@21.13.0", "", { "dependencies": { "stacktrace-js": "^2.0.2" }, "peerDependencies": { "@react-native-firebase/app": "21.13.0", "expo": ">=47.0.0" }, "optionalPeers": ["expo"] }, "sha512-GAkrlffyhQYuwVCW1kSxsRX/g3c5n5p3ruzpnGMRMVoUy7Md9L1LbxkkGTSHfdCaO/RJ/P5lLTL4GyBlI/KF7g=="],
+
+    "@react-native-firebase/firestore": ["@react-native-firebase/firestore@21.14.0", "", { "peerDependencies": { "@react-native-firebase/app": "21.14.0" } }, "sha512-nk8i4le8uQeydRo1JymUCUOWprVK8FUlgtjG0ZG3ne7qt7NvmzgoK59KGwP+G5e8th2wWgACDHmvRrQK6ctXlA=="],
 
     "@react-native-google-signin/google-signin": ["@react-native-google-signin/google-signin@13.2.0", "", { "peerDependencies": { "expo": ">=50.0.0", "react": "*", "react-dom": "*", "react-native": "*" }, "optionalPeers": ["expo", "react-dom"] }, "sha512-1D7eWPE7itfPmNwLkBylaoiIXAvHQNalt+AfKWcgLp45ZvPh6D5wJEhbs03PJtwO7j+Nc7Z9+DjZ2auIlWzZjw=="],
 
