@@ -16,7 +16,6 @@ import { useLocalSearchParams } from 'expo-router';
 import firestore, { doc, getDoc, setDoc } from '@react-native-firebase/firestore'; // ✅
 
 export const db = firestore();
-console.log('Firestore Initialized:', db);
 
 export default function MediaPipeCam() {
   const router = useRouter();
@@ -92,7 +91,10 @@ export default function MediaPipeCam() {
 
   const validModelPath = isModelReady && modelPath ? modelPath : '';
   const poseDetection = usePoseDetection(
-    { onResults },
+    { 
+      onResults, 
+      onError: (error) => console.error('Pose detection error:', error) 
+    },
     RunningMode.LIVE_STREAM,
     validModelPath
   );
@@ -216,8 +218,8 @@ export default function MediaPipeCam() {
           console.log('✅ Created new user streak data.');
         } else {
           const data = userSnap.data();
-          updatedCurrentStreak = (data.current_streak || 0) + 1;
-          updatedLongestStreak = Math.max(updatedCurrentStreak, data.longest_streak || 0);
+          updatedCurrentStreak = ((data?.current_streak || 0) + 1);
+          updatedLongestStreak = Math.max(updatedCurrentStreak, (data?.longest_streak ?? 0));
 
           await setDoc(
             userRef,
