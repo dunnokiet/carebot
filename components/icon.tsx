@@ -1,26 +1,28 @@
-import { cn } from "~/lib/utils";
-import { iconWithClassName } from "~/lib/iconWithClassName";
-import { LucideIcon, LucideProps } from "lucide-react-native";
-import { Platform, View } from "react-native";
+import { icons } from "lucide-react-native";
+import { cssInterop } from "nativewind";
+import { memo, useMemo } from "react";
 
-type IconProps = LucideProps & {
-  icon: LucideIcon;
-};
+type IconName = keyof typeof icons;
+type IconProps = { name: IconName; className?: string };
 
-export const Icon = ({ icon: LucideIcon, className, ...props }: IconProps) => {
-  iconWithClassName(LucideIcon);
+const Icon: React.FC<IconProps> = memo(({ name, className }) => {
+  const CustomIcon = useMemo(() => {
+    const Icon = icons[name];
+    Icon.displayName = name;
 
-  const iconClassName = Platform.select({
-    native: className,
-  });
+    return cssInterop(Icon, {
+      className: {
+        target: "style",
+        nativeStyleToProp: {
+          color: true,
+          width: true,
+          height: true,
+        },
+      },
+    });
+  }, [name]);
 
-  const viewClassName = Platform.select({
-    web: cn("[&>svg]:size-full", className),
-  });
+  return <CustomIcon className={className} />;
+});
 
-  return (
-    <View className={viewClassName}>
-      <LucideIcon className={iconClassName} {...props} />
-    </View>
-  );
-};
+export default Icon;

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "984062761928",
+    "project_id": "carebot-6b039",
+    "storage_bucket": "carebot-6b039.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984062761928:android:f02756a82a23f23757befd",
+        "android_client_info": {
+          "package_name": "com.healthguys.carebot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984062761928-hp7pvp66fhff3sjmalgln6anvpf2tudu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthguys.carebot",
+            "certificate_hash": "bc1ae9c3223b2c6c11ed83d959c22f43a21959d6"
+          }
+        },
+        {
+          "client_id": "984062761928-4am469kqrrhs8s424ro2de9lucig6pf2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgfbVK9Gr53cpp0cVVzJiFSz-hT0bERQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "984062761928-4am469kqrrhs8s424ro2de9lucig6pf2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "984062761928-0pvcsivn37671bmhaj5va88i3ni1hb2o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.healthguys.carebot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

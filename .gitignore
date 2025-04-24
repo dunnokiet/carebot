@@ -40,3 +40,9 @@ app-example
 # python
 .venv/
 __pycache__
+
+# vscode
+.vscode/
+
+# android
+android/

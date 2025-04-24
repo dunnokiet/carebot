@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  Keyboard,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
 } from "react-native";
 
-const ACTIVATION_THRESHOLD = 70;
-const MIN_SCROLL_UP_THRESHOLD = 30;
+const ACTIVATION_THRESHOLD = 30;
+const MIN_SCROLL_UP_THRESHOLD = 10;
 
 export function useAutoScroll(dependencies: React.DependencyList) {
   const scrollViewRef = useRef<ScrollView | null>(null);
@@ -36,18 +37,29 @@ export function useAutoScroll(dependencies: React.DependencyList) {
         ? previousOffsetY.current - currentOffsetY
         : 0;
 
+    previousOffsetY.current = currentOffsetY;
+
     const isDeliberateScrollUp =
       isScrollingUp && scrollUpDistance > MIN_SCROLL_UP_THRESHOLD;
 
     if (isDeliberateScrollUp) {
       setShouldAutoScroll(false);
-    } else {
-      const isScrolledToBottom = distanceFromBottom < ACTIVATION_THRESHOLD;
-      setShouldAutoScroll(isScrolledToBottom);
     }
 
-    previousOffsetY.current = currentOffsetY;
+    if (distanceFromBottom <= ACTIVATION_THRESHOLD) {
+      setShouldAutoScroll(true);
+    }
   };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    });
+
+    return () => {
+      showSubscription.remove();
+    };
+  }, [scrollViewRef]);
 
   useEffect(() => {
     if (shouldAutoScroll) {

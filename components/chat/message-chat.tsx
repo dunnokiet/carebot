@@ -4,12 +4,6 @@ import { cn } from "~/lib/utils";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { Text } from "../ui/text";
 
-interface Attachment {
-  name?: string;
-  contentType?: string;
-  url: string;
-}
-
 interface PartialToolCall {
   state: "partial-call";
   toolName: string;
@@ -46,6 +40,13 @@ interface TextPart {
   text: string;
 }
 
+interface Source {
+  sourceType: "url";
+  id: string;
+  url: string;
+  title?: string;
+}
+
 // For compatibility with AI SDK types, not used
 interface SourcePart {
   type: "source";
@@ -58,7 +59,6 @@ export interface Message {
   role: "user" | "assistant" | (string & {});
   content: string;
   createdAt?: Date;
-  experimental_attachments?: Attachment[];
   toolInvocations?: ToolInvocation[];
   parts?: MessagePart[];
 }
@@ -86,21 +86,23 @@ export function ChatMessage({
     <View className={cn(isUser ? "items-end" : "items-start")}>
       <View
         className={cn(
-          "min-w-16 max-w-xs items-center rounded-3xl p-4 sm:max-w-[70%]",
-          isUser ? "rounded-br-none bg-primary" : "rounded-bl-none bg-muted",
+          "items-center rounded-3xl p-4",
+          isUser
+            ? "max-w-[80%] rounded-br-none bg-primary"
+            : "rounded-bl-none bg-muted",
         )}
       >
         <MarkdownRenderer
           textClassName={cn(
-            "native:text-lg",
-            isUser ? "text-primary-foreground" : "text-foreground",
+            "text-foreground",
+            isUser && "text-primary-foreground",
           )}
         >
           {content}
         </MarkdownRenderer>
       </View>
       {showTimeStamp && createdAt ? (
-        <Text className="mt-1 px-1 text-sm opacity-50">{formattedTime}</Text>
+        <Text className="mt-2 px-2 text-sm opacity-50">{formattedTime}</Text>
       ) : null}
     </View>
   );
