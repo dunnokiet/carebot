@@ -3,7 +3,20 @@ import { Text } from "~/components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "~/components/ui/button";
 import { Icon } from "~/components/icon";
-import { ChevronRight, User, Bell, Globe, Shield, Key, LogOut, LogIn, UserPlus, LucideIcon } from "lucide-react-native";
+import { 
+  ChevronRight, 
+  User, 
+  Bell, 
+  Globe, 
+  Shield, 
+  Key, 
+  LogOut, 
+  LogIn, 
+  UserPlus, 
+  LucideIcon,
+  MessageSquare,
+  HelpCircle
+} from "lucide-react-native";
 import { useAuth } from "~/lib/auth-context";
 import { router } from "expo-router";
 
@@ -101,7 +114,7 @@ export default function ProfileScreen() {
 
       <Button
         variant="outline"
-        className="w-full"
+        className="mb-4 w-full"
         onPress={() => {
           signOut();
           router.replace("/(auth)/register");
@@ -110,6 +123,17 @@ export default function ProfileScreen() {
         <View className="flex-row items-center">
           <Icon icon={UserPlus} className="mr-2 h-5 w-5" />
           <Text>Create Account</Text>
+        </View>
+      </Button>
+      
+      <Button
+        variant="ghost"
+        className="w-full"
+        onPress={() => router.push("/feedback")}
+      >
+        <View className="flex-row items-center">
+          <Icon icon={MessageSquare} className="mr-2 h-5 w-5 text-primary" />
+          <Text>Send Feedback</Text>
         </View>
       </Button>
     </View>
@@ -176,6 +200,25 @@ export default function ProfileScreen() {
       },
     },
   ];
+  
+  const supportItems: ProfileSectionItemProps[] = [
+    {
+      icon: MessageSquare,
+      title: "Send Feedback",
+      description: "Share your thoughts or report issues",
+      onPress: () => {
+        router.push("/feedback");
+      },
+    },
+    {
+      icon: HelpCircle,
+      title: "Help Center",
+      description: "FAQs and troubleshooting",
+      onPress: () => {
+        console.log("help center");
+      },
+    },
+  ];
 
   return (
     <SafeAreaView className="flex-1 bg-background">
@@ -204,6 +247,12 @@ export default function ProfileScreen() {
         <ProfileSection
           title="Content & Activity"
           items={contentActivityItems}
+        />
+        
+        {/* Support Section */}
+        <ProfileSection
+          title="Support"
+          items={supportItems}
         />
 
         {/* Logout Button */}
