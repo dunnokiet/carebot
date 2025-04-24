@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "984062761928-bq5qi18bsn0fl8glmrjpc1u3n8tflorm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthguys.carebot",
+            "certificate_hash": "fff75f5d2a396b4fa8bf1d5cfcdc3ae585e0800e"
+          }
+        },
+        {
           "client_id": "984062761928-hp7pvp66fhff3sjmalgln6anvpf2tudu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.healthguys.carebot",
             "certificate_hash": "bc1ae9c3223b2c6c11ed83d959c22f43a21959d6"
+          }
+        },
+        {
+          "client_id": "984062761928-l0qv1c4vbtjr8rtlc1l38g7dggv6gfjh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthguys.carebot",
+            "certificate_hash": "0c357333c21efa5d6f05ccbef64a570e67988f51"
           }
         },
         {

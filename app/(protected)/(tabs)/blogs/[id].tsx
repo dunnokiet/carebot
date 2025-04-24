@@ -7,7 +7,7 @@ import {
   query,
   where,
 } from "@react-native-firebase/firestore";
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { Image, ScrollView, View } from "react-native";
 import { Text } from "~/components/ui/text";
@@ -38,8 +38,25 @@ export default function BlogDetailScreen() {
 
   return (
     <View className="flex-1 bg-background">
+      {loading && (
+        <View className="justify-center p-4 pt-8">
+          <View className="roundex-2xl mx-16 mb-12 h-32 animate-pulse rounded bg-muted" />
+          <View className="roundex-3xl mb-12 h-52 animate-pulse rounded bg-muted" />
+          <View className="gap-4">
+            <View className="roundex-3xl h-8 animate-pulse rounded bg-muted" />
+            <View className="roundex-3xl h-8 animate-pulse rounded bg-muted" />
+            <View className="roundex-3xl h-8 animate-pulse rounded bg-muted" />
+            <View className="roundex-3xl h-8 animate-pulse rounded bg-muted" />
+            <View className="roundex-3xl h-8 animate-pulse rounded bg-muted" />
+          </View>
+        </View>
+      )}
       {!loading && (
-        <ScrollView className="flex-1 p-4" overScrollMode="never">
+        <ScrollView
+          className="flex-1"
+          contentContainerClassName="pt-8 px-4"
+          overScrollMode="never"
+        >
           <H2 className="mb-6 border-b-0 p-0 text-center">{blog.title}</H2>
           <View className="mb-6 flex-row items-center justify-center">
             <Image

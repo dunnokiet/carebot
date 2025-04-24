@@ -63,8 +63,8 @@ export default function BlogScreen() {
       {loading &&
         Array.from({ length: 7 }).map((_, index) => (
           <View key={index} className="mx-4 mb-4 flex-row items-center gap-4">
-            <View className="h-24 w-24 rounded-2xl bg-muted" />
-            <View className="h-20 flex-1 rounded-2xl bg-muted" />
+            <View className="h-24 w-24 animate-pulse rounded-2xl bg-muted" />
+            <View className="h-20 flex-1 animate-pulse rounded-2xl bg-muted" />
           </View>
         ))}
       {!loading && blogs.length === 0 && (
@@ -74,6 +74,9 @@ export default function BlogScreen() {
       )}
       {!loading && blogs.length > 0 && (
         <FlatList
+          removeClippedSubviews={true}
+          initialNumToRender={7}
+          maxToRenderPerBatch={100}
           className="mx-4"
           data={blogs}
           keyExtractor={(item: any) => item.id}

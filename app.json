@@ -21,8 +21,7 @@
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "android.permission.CAMERA"
       ]
     },
     "web": {
@@ -50,6 +49,14 @@
         {
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
         }
+      ],
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera.",
+          "enableMicrophonePermission": true,
+          "microphonePermissionText": "$(PRODUCT_NAME) needs access to your Microphone."
+        }
       ]
     ],
     "experiments": {
@@ -60,14 +67,8 @@
         "origin": false
       },
       "eas": {
-        "projectId": "9af08563-9086-4e33-9d0a-569d3730753a"
+        "projectId": "f0f4e0c7-5a65-4d58-8d8f-9c60c6320d5b"
       }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/9af08563-9086-4e33-9d0a-569d3730753a"
     }
   }
 }
