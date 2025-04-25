@@ -27,7 +27,7 @@ import firestore, {
   doc,
   getDoc,
   setDoc,
-} from "@react-native-firebase/firestore"; // ✅
+} from "@react-native-firebase/firestore";
 
 export const db = firestore();
 
@@ -35,7 +35,6 @@ export default function MediaPipeCam() {
   const router = useRouter();
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice("front");
-
   const [permissionStatus, setPermissionStatus] = useState<string | null>(null);
   const [modelPath, setModelPath] = useState<string | null>(null);
   const [isModelReady, setIsModelReady] = useState(false);
@@ -95,8 +94,8 @@ export default function MediaPipeCam() {
         if (leftKnee && rightKnee && leftHip && rightHip) {
           const avgKneeY = (pts[leftKnee].y + pts[rightKnee].y) / 2;
           const avgHipY = (pts[leftHip].y + pts[rightHip].y) / 2;
-          const down = avgHipY > avgKneeY + 0.1;
-
+          const down = avgHipY > avgKneeY + 0.015;
+           console.log('avgHipY', avgHipY)
           if (down && !wasDown) {
             setWasDown(true);
           } else if (!down && wasDown) {

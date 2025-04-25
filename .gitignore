@@ -46,3 +46,6 @@ __pycache__
 
 # android
 android/
+.env
+.idea/
+google-services.json

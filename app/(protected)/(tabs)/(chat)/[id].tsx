@@ -14,9 +14,9 @@ export default function App() {
 
   const { messages, handleInputChange, input, handleSubmit, status } = useChat({
     fetch: expoFetch as unknown as typeof globalThis.fetch,
-    api: generateAPIUrl("/api/chat?protocol=text"),
-    streamProtocol: "text",
-    experimental_throttle: 300,
+    api: 'https://6170-42-112-152-248.ngrok-free.app/api/v1/chatbot/conversations/16/messages/stream',
+    experimental_throttle: 10,
+    maxSteps:5,
     onFinish: () => {
       setTimeout(
         () => scrollViewRef.current?.scrollToEnd({ animated: true }),

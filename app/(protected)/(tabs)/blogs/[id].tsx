@@ -12,20 +12,19 @@ import { useCallback, useEffect, useState } from "react";
 import { Image, ScrollView, View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { H2, H3, Large, P, Small } from "~/components/ui/typography";
-
+import {db} from "~/components/streaks/camera"
 export default function BlogDetailScreen() {
   const { id } = useLocalSearchParams();
   const [blog, setBlog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
   const docId = Array.isArray(id) ? id[0] : id;
-
+  console.log('a')
   const fetchBlog = useCallback(async () => {
     setLoading(true);
-
-    const db = getFirestore();
+    console.log(db)
     const q = query(collection(db, "blogs"), where("objectID", "==", docId));
     const snap = await getDocs(q);
+    console.log(snap)
     const results = snap.docs.map((d) => ({ id: d.id, ...d.data() }))[0];
     setBlog(results);
 

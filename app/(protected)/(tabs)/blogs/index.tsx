@@ -1,16 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FlatList, Image, View } from "react-native";
 import Icon from "~/components/icon";
 import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from "@react-native-firebase/firestore";
-import { H1, H2, Muted, P, Small } from "~/components/ui/typography";
+import firestore from "@react-native-firebase/firestore";
+import { H2, Muted, P, Small } from "~/components/ui/typography";
 import { Link } from "expo-router";
 
 export default function BlogScreen() {
@@ -20,19 +14,24 @@ export default function BlogScreen() {
 
   const fetchBlogs = useCallback(async (term: string) => {
     setLoading(true);
+    try {
+      const snap = await firestore().collection("blogs").get();
+      const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 
-    const db = getFirestore();
+      const filtered = term
+        ? data.filter((b: any) =>
+            (b.title as string)
+              .toLowerCase()
+              .includes(term.trim().toLowerCase())
+          )
+        : data;
 
-    const snap = await getDocs(collection(db, "blogs"));
-    const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-
-    const filtered = term
-      ? data.filter((b: any) =>
-          (b.title as string).toLowerCase().includes(term.trim().toLowerCase()),
-        )
-      : data;
-    setBlogs(filtered);
-    setLoading(false);
+      setBlogs(filtered);
+    } catch (err) {
+      console.error("Error fetching blogs:", err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -45,6 +44,7 @@ export default function BlogScreen() {
         <H2 className="border-b-0 p-0">Blogs</H2>
         <Muted>Medical blogs from experts</Muted>
       </View>
+
       <View className="mx-4 mb-6">
         <View className="relative">
           <Input
@@ -60,6 +60,7 @@ export default function BlogScreen() {
           />
         </View>
       </View>
+
       {loading &&
         Array.from({ length: 7 }).map((_, index) => (
           <View key={index} className="mx-4 mb-4 flex-row items-center gap-4">
@@ -67,11 +68,13 @@ export default function BlogScreen() {
             <View className="h-20 flex-1 animate-pulse rounded-2xl bg-muted" />
           </View>
         ))}
+
       {!loading && blogs.length === 0 && (
         <View className="items-center justify-center">
-          <P className="">No blogs found for “{searchTerm}”</P>
+          <P>No blogs found for “{searchTerm}”</P>
         </View>
       )}
+
       {!loading && blogs.length > 0 && (
         <FlatList
           removeClippedSubviews={true}

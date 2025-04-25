@@ -9,7 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "$(PRODUCT_NAME) needs access to your Camera.",
+        "NSMicrophoneUsageDescription": "$(PRODUCT_NAME) needs access to your Microphone."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -67,7 +71,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "f0f4e0c7-5a65-4d58-8d8f-9c60c6320d5b"
+        "projectId": "c70e2bd7-fb5f-4638-b63c-a931e78ce1b2"
       }
     }
   }
