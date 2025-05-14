@@ -4,7 +4,7 @@ Carebot is a comprehensive health and wellness mobile application designed to he
 
 <img alt="Infographic" src="./assets/infographic.png" width="100%" />
 
-## 🚀 Features
+## Features
 
 - **Health News**: Browse and read the latest health articles from trusted sources like Healthline.
 - **AI Health Assistant**: Chat with an AI-powered assistant for real-time health guidance.
@@ -91,7 +91,6 @@ The frontend uses this URL to fetch AI responses, health articles, and manage us
 **Linting & Formatting**
 
 - Format code with Prettier
-- Lint code before commits:
 
 ```bash
 bun run lint
