@@ -2,109 +2,96 @@
 
 Carebot is a comprehensive health and wellness mobile application designed to help users track health habits, access quality health information, and receive personalized health guidance.
 
-## Features
+<img alt="Infographic" src="./assets/infographic.png" width="100%" />
 
-- **Health News**: Browse and read the latest health articles from trusted sources like Healthline
-- **AI Health Assistant**: Chat with an AI-powered health assistant to answer questions and provide guidance
-- **Streak Tracker**: Monitor and maintain your health habits through streak tracking
-- **User Profile**: Personalized user experience with profile customization
-- **Health Information**: Access to a wide range of health topics including nutrition, fitness, mental health, and chronic conditions
+## 🚀 Features
 
-## Technologies
+- **Health News**: Browse and read the latest health articles from trusted sources like Healthline.
+- **AI Health Assistant**: Chat with an AI-powered assistant for real-time health guidance.
+- **Streak Tracker**: Track and visualize your daily health habit streaks.
+- **User Profile**: Customize your personal experience with a secure profile.
+- **Health Information**: Access curated knowledge on nutrition, fitness, mental health, and chronic conditions.
 
-Carebot is built using modern mobile development technologies:
+## Prerequisites
 
-- **Expo & React Native**: For cross-platform mobile development
-- **Firebase**: Authentication, data storage, and analytics
-- **NativeWind**: Tailwind CSS for React Native styling
-- **Expo Router**: For navigation within the application
-- **AI/OpenAI Integration**: Powering the conversational health assistant
-- **TypeScript**: For type-safe code
-- **Bun**: Fast JavaScript runtime and package manager
+- **Node.js** v14 or newer
+- **[Bun](https://bun.sh)** as the package manager
+- **Expo CLI** (install with `npm install -g expo-cli`)
+- iOS Simulator or Android Emulator for local testing *(optional)*
 
 ## Getting Started
 
-### Prerequisites
+**1. Clone the project**
 
-- Node.js (v14 or later)
-- Bun (instead of npm/yarn)
-- Expo CLI
-- iOS Simulator or Android Emulator (optional for local testing)
+```bash
+git clone https://github.com/dunnokiet/carebot.git
+cd carebot
+```
 
-### Installation
+**2. Install dependencies**
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/carebot.git
-   cd carebot
-   ```
+```bash
+bun install
+```
 
-2. Install dependencies:
-   ```bash
-   bun install
-   ```
+**3. Set up environment variables**
 
-3. Set up environment variables:
-   - Create a `.env` file based on `.env.example`
-   - Configure Firebase credentials
+- Copy `.env.example` to `.env` and fill in required values.
+- Include your Firebase credentials and API base URL.
 
-4. Start the development server:
-   ```bash
-   bunx expo start
-   ```
+**4. Start the app**
 
-5. Run on your preferred platform:
-   - Press `i` for iOS simulator
-   - Press `a` for Android emulator
-   - Scan the QR code with Expo Go on your physical device
+```bash
+bunx expo start
+```
 
-## Project Structure
+- Press `i` for iOS simulator
+- Press `a` for Android emulator
+- Or scan the QR code with the **Expo Go app**
 
-- **app/**: Main application screens and navigation
-  - **(tabs)/**: Tab-based navigation screens
-  - **(auth)/**: Authentication-related screens
-- **components/**: Reusable UI components
-  - **ui/**: Basic UI elements (buttons, inputs, etc.)
-  - **chatbot/**: Chat interface components
-- **lib/**: Utilities, API integrations, and business logic
-  - **data/**: Data models and static content
-- **assets/**: Images, fonts, and other static resources
-- **styles/**: Global styling configurations
+## Backend Integration
 
-## Key Features Explained
+This app works with a dedicated backend available here: **[carebot-backend](https://github.com/Healer-H/carebot-backend/tree/master/chatbot_service)**
 
-### Health News Feed
+The frontend uses this URL to fetch AI responses, health articles, and manage user data.
 
-The news feed provides curated health articles from Healthline, covering various topics such as nutrition, fitness, mental health, and medical conditions. Users can browse through articles and read in-depth content on topics that interest them.
+## Feature Details
 
-### AI Health Assistant
+**Health News Feed**
 
-The integrated chat system allows users to ask health-related questions and receive evidence-based information. The AI assistant can provide guidance on nutrition, exercise, symptoms, and general wellness topics.
+- Read curated health content from Healthline. Topics include mental wellness, disease prevention, and fitness tips.
 
-### Streak Tracker
+**AI Health Assistant**
 
-To encourage healthy habit formation, the streak tracker allows users to:
-- Set daily health goals
-- Track their progress
-- Maintain streaks of consistent healthy behaviors
-- Visualize their health journey over time
+- Answer health questions
+- Provide wellness suggestions
+- Recommend lifestyle improvements
 
-### Authentication & User Profile
+**Streak Tracker**
 
-The application provides secure user authentication via Firebase, allowing users to create accounts, save preferences, and track their health journey across devices.
+- Set and track daily goals
+- Build habit streaks
+- Visualize progress over time
 
-## Development
+**Authentication & User Profiles**
 
-### Adding New Features
+- Secure login via Firebase
+- Personalized health dashboard
+- Data synced across devices
 
-1. Create new components in the appropriate directory
-2. Add screens to the router in `app/` directory
-3. Update navigation if needed
-4. Test on multiple device sizes
+## Development Tips
 
-### Code Style
+**Adding New Features**
 
-The project uses Prettier for code formatting and follows TypeScript best practices. Run linting before commits:
+1. Add components to the relevant folder.
+2. Update routing in `app/`.
+3. Adjust navigation if necessary.
+4. Test responsiveness and functionality.
+
+**Linting & Formatting**
+
+- Format code with Prettier
+- Lint code before commits:
 
 ```bash
 bun run lint
@@ -112,7 +99,11 @@ bun run lint
 
 ## Acknowledgements
 
-- Healthline for health information
-- Gemini/OpenAI for conversational AI capabilities
-- Firebase for authentication and backend services
-- Expo team for the development platform
+- **Healthline** – Health data and articles
+- **Gemini / OpenAI** – Conversational AI
+- **Firebase** – Authentication & backend support
+- **Expo** – App development framework
+
+## Contributors
+
+![](https://contrib.rocks/image?repo=dunnokiet/carebot)
